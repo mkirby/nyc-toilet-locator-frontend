@@ -1,7 +1,7 @@
 // ANCHOR DOM Elements
 const main = document.querySelector("main")
-
-// ANCHOR Fetch Functions
+const pageControls = document.querySelector("#bottom-div")
+let page = 1
 
 // ANCHOR Event Listeners
 document.addEventListener("click", e => {
@@ -60,10 +60,43 @@ renderIndex = (array) => {
         const location = createNode("p", toiletObj.location)
         divCard.append(name, borough, neighborhood, address, location)
         main.append(divCard)
-        
     })
 }
 
+function renderPageControls(maxPage) {
+    while (pageControls.firstElementChild) {
+        pageControls.firstElementChild.remove()
+    }
+    const backButton = createNode("button", "<")
+    backButton.addEventListener("click", () => {
+        page--
+        init()
+    })
+    const pageNumbers = createNode("p", `Page ${page} of ${maxPage}`)
+
+    const nextButton = createNode("button", ">")
+    nextButton.addEventListener("click", () => {
+        page++
+        init()
+    })
+
+    backButton.className = "page-controls"
+    pageNumbers.className = "page-controls"
+    nextButton.className = "page-controls"
+    pageControls.append(backButton, pageNumbers, nextButton)
+    
+    if (page == 1) {
+        backButton.style.display = "none"
+    } else if (page == maxPage) {
+        nextButton.style.display = "none";
+    } else {
+        nextButton.style.display = "";
+        backButton.style.display = "";
+    }
+    
+}
+
+// ANCHOR Helper Functions
 createNode = (type, content) => {
     let node = document.createElement(type);
     switch (type) {
@@ -73,6 +106,9 @@ createNode = (type, content) => {
         case "p":
             node.innerText = content;
             break
+        case "button":
+            node.innerText = content;
+            break
         case "div":
             node.className = content;
             break
@@ -80,11 +116,21 @@ createNode = (type, content) => {
     return node;
 }
 
-// ANCHOR Initial Render
-init = () => {
-    fetch("http://localhost:3000/api/v1/toilets?page=1")
+function getMaxPage() {
+    return fetch("http://localhost:3000/api/v1/info")
     .then(r => r.json())
-    .then(data => renderIndex(data))
+}
+
+// ANCHOR Initial Render
+function init() {
+    let maxPage
+    getMaxPage().then(data => maxPage = data)
+    fetch(`http://localhost:3000/api/v1/toilets?page=${page}`)
+        .then(r => r.json())
+        .then(data => {
+            renderIndex(data)
+            renderPageControls(maxPage)
+        })
 }
 
 // ANCHOR Function Calls
