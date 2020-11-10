@@ -7,6 +7,11 @@ const getToilet = id => {
     .then(r => r.json())
     .then(renderShowPage)
 }
+const postReview = () => {
+    fetch()
+    .then(r => r.json())
+    .then()
+}
 
 // ANCHOR Event Listeners
 const clickListeners = () => {
@@ -14,6 +19,15 @@ const clickListeners = () => {
         //if user clicks "Restrooms Near Me" button
         if (e.target.matches("#filter-near-me button")) {
             geolocateUser(e)
+        }
+    })
+}
+
+const submitListeners = () => {
+    document.addEventListener("submit", e =>{
+        e.preventDefault()
+        if (e.target.matches("#new-comment-form")) {
+            console.log(e.target)
         }
     })
 }
@@ -118,6 +132,7 @@ const renderReviews = (toiletObj) => {
     addReviewDiv.className = "add-review-div"
     const heading = createNode("h3", "Leave a Review")
     const form = document.createElement("form")
+    form.id = "new-comment-form"
     form.innerHTML = `
         <input type="text" id="username" name="username" placeholder="Name">
         <label for="rating">Star Rating:</label>
@@ -146,7 +161,6 @@ const renderReviews = (toiletObj) => {
 }
 
 const renderOneReview = reviewObj => {
-    console.log(reviewObj)
     //create the review container
     const div = document.createElement("div")
     div.className = "review"
@@ -211,5 +225,7 @@ init = () => {
 }
 
 // ANCHOR Function Calls
-init()
+// init()
 clickListeners()
+submitListeners()
+getToilet(167)
