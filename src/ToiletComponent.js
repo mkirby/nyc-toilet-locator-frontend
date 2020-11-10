@@ -10,6 +10,7 @@ class ToiletComponent {
   }
 
   renderCard(parentElement) {
+    // TODO
     this.element = document.createElement("div")
     this.element.classList.add("toilet-card")
     

@@ -8,8 +8,10 @@ const initialize = () => {
   client.get("/toilets")
     .then(toiletArray => {
       toiletArray.forEach(toiletObj => {
-        const toiletComponent = new ToiletComponent(toiletObj)
-        toiletComponent.renderCard(main)
+        console.log(toiletObj)
+        // TODO
+        // const toiletComponent = new ToiletComponent(toiletObj)
+        // toiletComponent.renderCard(main)
       })
     })
 }
@@ -22,4 +24,4 @@ function getMaxPage() {
         })
 }
 
-// initialize()
+initialize()
