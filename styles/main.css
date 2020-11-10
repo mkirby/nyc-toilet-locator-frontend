@@ -46,9 +46,11 @@ main {
 }
 
 .main-show {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
+  gap: 0px 0px;
+  grid-template-areas:
+    "show comment";
 }
 
 /* ANCHOR MAIN-INDEX ELEMENTS */
@@ -69,11 +71,17 @@ main {
 
 /* ANCHOR MAIN-SHOW ELEMENTS */
 .selected-toilet {
+  grid-area: show;
   border: 2px solid orange;
-  background-color: orange;
+  background-color: yellow;
+}
+
+.selected-toilet img {
+  width: 25%;
 }
 
 #comments-div {
+  grid-area: comment;
   border: 2px solid orange;
   background-color: yellow;
 }

@@ -1,7 +1,12 @@
 // ANCHOR DOM Elements
-const main = document.querySelector("main")
+const main = document.querySelector("#main-content-div")
 
 // ANCHOR Fetch Functions
+const getToilet = id => {
+    fetch(`http://localhost:3000/api/v1/toilets/${id}`)
+    .then(r => r.json())
+    .then(renderShow)
+}
 
 // ANCHOR Event Listeners
 const clickListeners = () => {
@@ -12,7 +17,6 @@ const clickListeners = () => {
         }
     })
 }
-
 
 // ANCHOR Event Handlers
 const geolocateUser = event => {
@@ -40,7 +44,7 @@ const geolocateUser = event => {
     }
 }
 
-function getAddress (latitude, longitude) {
+const getAddress = (latitude, longitude) => {
     fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
     .then(r => r.json())
     .then(
@@ -49,7 +53,50 @@ function getAddress (latitude, longitude) {
     )
 }
 
+const averageRating = toiletReviews => {
+    sum = 0
+    toiletReviews.forEach(review => {
+        sum += review.rating
+    })
+    return average = Math.floor(sum / toiletReviews.length)
+}
+
 // ANCHOR Render Functions
+const renderShow = (toiletObj) => {
+    main.innerHTML = ''
+    main.classList.remove("main-index")
+    main.classList.add("main-show")
+    const divContainer = createNode("div", "selected-toilet")
+    const img = document.createElement("img")
+    img.src = "https://www.atlantawatershed.org/wp-content/uploads/2017/06/default-placeholder.png"
+    img.alt = toiletObj.name
+    const likes = createNode("p", `${toiletObj.likes} Likes!`)
+    const starRating = document.createElement("div")
+    starRating.innerHTML = renderStarRating(toiletObj.reviews)
+    const name = createNode("h3", toiletObj.name)
+    const address = createNode("p", `Address:\n${toiletObj.address}`)
+    const borough = createNode("p", `Borough:\n${toiletObj.borough}`)
+    const neighborhood = createNode("p", `Neighborhood:\n${toiletObj.neighborhood}`)
+    const location = createNode("p", `Cross Streets:\n${toiletObj.location}`)
+    const handicap_accessible = createNode("p", `Handicap Accessible:\n${toiletObj.handicap_accessible}`)
+    const open_year_round = createNode("p", `Open Year Round:\n${toiletObj.open_year_round}`)
+    
+    divContainer.append(img, likes, starRating, name, address, borough, neighborhood, location, handicap_accessible, open_year_round)
+    main.append(divContainer)
+}
+const renderStarRating = reviewsObj => {
+    let checkedStars = averageRating(reviewsObj)
+    let uncheckedStars = 5 - average
+    let htmlChunk = ''
+    for (let i=checkedStars; i>0; i--) { htmlChunk += `<span class="fa fa-star checked"></span>`}
+    for (let i=uncheckedStars; i>0; i--) { htmlChunk += `<span class="fa fa-star"></span>`}
+    return htmlChunk
+}
+
+const renderComment = (reviewObj) => {
+    
+}
+
 renderIndex = (array) => {
     while (main.querySelector(".toilet-card")) {
         main.querySelector(".toilet-card").remove()
@@ -93,5 +140,6 @@ init = () => {
 }
 
 // ANCHOR Function Calls
-init()
+// init()
 clickListeners()
+getToilet(63)
