@@ -1,7 +1,7 @@
 body {
   background-color: #FFF8E7;
   display: grid;
-  grid-template-columns: 0.3fr 1.7fr;
+  grid-template-columns: 0.5fr 1.5fr;
   /* grid-template-rows: 0.4fr 2.2fr 0.2fr; */
   gap: 0px 0px;
   grid-template-areas:
@@ -16,7 +16,8 @@ nav {
   border: 2px solid lightblue;
   background-color: lightblue;
   height: 100%;
-  padding-left: 20px;
+  width: 200px;
+  padding: 40px;
 }
 
 #menu-links p {
@@ -77,14 +78,14 @@ main {
 /* ANCHOR MAIN-SHOW ELEMENTS */
 #toilet-div {
   grid-area: show;
-  border: 2px solid orange;
+  /* border: 2px solid orange; */
 }
 .selected-toilet {
   background-color: white;
   padding: 10px;
   margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border: 2px solid orange;
+  /* border: 2px solid orange; */
 }
 
 .selected-toilet img {
@@ -100,7 +101,7 @@ main {
     "add"
     "reviews"
     ;
-  border: 2px solid orange;
+  /* border: 2px solid orange; */
 }
 
 #reviews-div .review {
