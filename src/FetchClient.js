@@ -7,7 +7,7 @@ class FetchClient {
   }
 
   get(endpoint) {
-    return this.fetchAndParse(this.baseUrl + endpoint)
+    return this.fetchAndParse(this.baseUrl + endpoint + urlEnd)
   }
 
   delete(endpoint) {
@@ -37,7 +37,8 @@ class FetchClient {
   }
 }
 
-const baseUrl = "http://localhost:3000"
+const baseUrl = "http://localhost:3000/api/v1"
+const urlEnd = `?_limit=8&page=1`
 
 const client = new FetchClient(baseUrl)
 

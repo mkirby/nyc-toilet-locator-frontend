@@ -9,7 +9,7 @@ class ToiletComponent {
     return this.element.querySelector(selector)
   }
 
-  render(parentElement) {
+  renderCard(parentElement) {
     this.element = document.createElement("div")
     this.element.classList.add("toilet-card")
     
