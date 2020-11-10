@@ -5,11 +5,11 @@ class ToiletComponent {
     this.restroom = toiletObj
   }
 
-  findChildElement(selector) {
+  findChildElement = (selector) => {
     return this.element.querySelector(selector)
   }
 
-  renderCard(parentElement) {
+  renderIndex = (parentElement) => {
     // TODO
     this.element = document.createElement("div")
     this.element.classList.add("toilet-card")
