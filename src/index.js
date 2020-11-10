@@ -4,13 +4,18 @@ const main = document.querySelector("main")
 // ANCHOR Fetch Functions
 
 // ANCHOR Event Listeners
-document.addEventListener("click", e => {
-    //if user clicks "Restrooms Near Me" button
-    if (e.target.matches("#filter-near-me button")) {geolocate(e)}
-})
+const clickListeners = () => {
+    document.addEventListener("click", e => {
+        //if user clicks "Restrooms Near Me" button
+        if (e.target.matches("#filter-near-me button")) {
+            geolocateUser(e)
+        }
+    })
+}
+
 
 // ANCHOR Event Handlers
-const geolocate = event => {
+const geolocateUser = event => {
     if ("geolocation" in navigator) {
       // check if geolocation is supported/enabled on current browser
         navigator.geolocation.getCurrentPosition(
@@ -89,3 +94,4 @@ init = () => {
 
 // ANCHOR Function Calls
 init()
+clickListeners()
