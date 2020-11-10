@@ -47,7 +47,7 @@ main {
 
 .main-show {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 0px 0px;
   grid-template-areas:
     "show comment";
@@ -73,22 +73,41 @@ main {
 .selected-toilet {
   grid-area: show;
   border: 2px solid orange;
-  background-color: yellow;
 }
 
 .selected-toilet img {
   width: 25%;
 }
 
-#comments-div {
+#reviews-div {
   grid-area: comment;
+  display: grid;
+  /* grid-template-columns: minmax(0, 1fr); */
+  gap: 0px 0px;
+  grid-template-areas:
+    "add"
+    "reviews"
+    ;
   border: 2px solid orange;
-  background-color: yellow;
 }
 
-#comments-div p {
-  border: 2px solid black;
-  background-color: cyan;
+#reviews-div .review {
+  background-color: white;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.add-review-div {
+  grid-area: add;
+  padding: 10px;
+  margin: 10px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.rendered-reviews {
+  grid-area: reviews;
 }
 
 .checked {

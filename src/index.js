@@ -5,7 +5,7 @@ const main = document.querySelector("#main-content-div")
 const getToilet = id => {
     fetch(`http://localhost:3000/api/v1/toilets/${id}`)
     .then(r => r.json())
-    .then(renderShow)
+    .then(renderShowPage)
 }
 
 // ANCHOR Event Listeners
@@ -62,7 +62,7 @@ const averageRating = toiletReviews => {
 }
 
 // ANCHOR Render Functions
-const renderShow = (toiletObj) => {
+const renderShowPage = (toiletObj) => {
     main.innerHTML = ''
     main.classList.remove("main-index")
     main.classList.add("main-show")
@@ -72,7 +72,8 @@ const renderShow = (toiletObj) => {
     img.alt = toiletObj.name
     const likes = createNode("p", `${toiletObj.likes} Likes!`)
     const starRating = document.createElement("div")
-    starRating.innerHTML = renderStarRating(toiletObj.reviews)
+    const avgStarRating = averageRating(toiletObj.reviews)
+    starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
     const name = createNode("h3", toiletObj.name)
     const address = createNode("p", `Address:\n${toiletObj.address}`)
     const borough = createNode("p", `Borough:\n${toiletObj.borough}`)
@@ -80,21 +81,66 @@ const renderShow = (toiletObj) => {
     const location = createNode("p", `Cross Streets:\n${toiletObj.location}`)
     const handicap_accessible = createNode("p", `Handicap Accessible:\n${toiletObj.handicap_accessible}`)
     const open_year_round = createNode("p", `Open Year Round:\n${toiletObj.open_year_round}`)
-    
     divContainer.append(img, likes, starRating, name, address, borough, neighborhood, location, handicap_accessible, open_year_round)
     main.append(divContainer)
+    renderReviews(toiletObj.reviews)
 }
-const renderStarRating = reviewsObj => {
-    let checkedStars = averageRating(reviewsObj)
-    let uncheckedStars = 5 - average
+const renderStarRating = (checked, unchecked) => {
     let htmlChunk = ''
-    for (let i=checkedStars; i>0; i--) { htmlChunk += `<span class="fa fa-star checked"></span>`}
-    for (let i=uncheckedStars; i>0; i--) { htmlChunk += `<span class="fa fa-star"></span>`}
+    for (let i=checked; i>0; i--) { htmlChunk += `<span class="fa fa-star checked"></span>`}
+    for (let i=unchecked; i>0; i--) { htmlChunk += `<span class="fa fa-star"></span>`}
     return htmlChunk
 }
 
-const renderComment = (reviewObj) => {
-    
+const renderReviews = (toiletReviewsObj) => {
+    // reviews half of the main container div
+    const reviewsDiv = document.createElement("div")
+    reviewsDiv.id = "reviews-div"
+    //top half of reviews div
+    const addReviewDiv = document.createElement("div")
+    addReviewDiv.className = "add-review-div"
+    const heading = createNode("h3", "Leave a Review")
+    const form = document.createElement("form")
+    form.innerHTML = `
+        <input type="text" id="username" name="username" placeholder="Name">
+        <label for="rating">Star Rating:</label>
+        <select id="rating" name="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+        <textarea name="message" placeholder="Hey... say something!" style="width:80%";></textarea><br><br>
+        <input type="submit" value="Submit">
+    `
+    addReviewDiv.append(heading,form)
+    //bottom half of reviews div
+    const renderedReviews = document.createElement("div")
+    renderedReviews.className = "rendered-reviews"
+    //render each comment and append
+    toiletReviewsObj.forEach(review => {
+        const singleReview = renderOneReview(review)
+        renderedReviews.append(singleReview)
+    })
+    //append inner divs to review div
+    reviewsDiv.append(addReviewDiv, renderedReviews)
+    main.append(reviewsDiv)
+}
+
+const renderOneReview = reviewObj => {
+    console.log(reviewObj)
+    //create the review container
+    const div = document.createElement("div")
+    div.className = "review"
+    div.dataset.reviewId = reviewObj.id
+    // create the review data
+    const title = createNode("h5", `${reviewObj.name} on ${reviewObj.date}`)
+    const content = createNode("p", `\'${reviewObj.content}\'`)
+    //append the review data
+    div.append(title, content)
+    //return review card
+    return div
 }
 
 renderIndex = (array) => {
@@ -128,6 +174,9 @@ createNode = (type, content) => {
         case "div":
             node.className = content;
             break
+        case "h5":
+            node.innerText = content;
+            break
     }
     return node;
 }
@@ -142,4 +191,4 @@ init = () => {
 // ANCHOR Function Calls
 // init()
 clickListeners()
-getToilet(63)
+getToilet(153)
