@@ -63,17 +63,30 @@ const averageRating = toiletReviews => {
 
 // ANCHOR Render Functions
 const renderShowPage = (toiletObj) => {
+    //clear the main container
     main.innerHTML = ''
-    main.classList.remove("main-index")
+    //clear any other classNames on the main container
+    main.className = ""
+    //assign the correct class
     main.classList.add("main-show")
+    //show toilet half of the main container div
+    const toiletDiv = document.createElement("div")
+    toiletDiv.id = "toilet-div"
+    // contain the toilet card
     const divContainer = createNode("div", "selected-toilet")
+    //featured image
     const img = document.createElement("img")
     img.src = "https://www.atlantawatershed.org/wp-content/uploads/2017/06/default-placeholder.png"
     img.alt = toiletObj.name
-    const likes = createNode("p", `${toiletObj.likes} Likes!`)
+    //likes and rating
     const starRating = document.createElement("div")
     const avgStarRating = averageRating(toiletObj.reviews)
     starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
+    const likes = document.createElement("h4")
+    likes.innerHTML = `
+        <i class="fa fa-heart"></i> ${toiletObj.likes}
+    `
+    //toilet details
     const name = createNode("h3", toiletObj.name)
     const address = createNode("p", `Address:\n${toiletObj.address}`)
     const borough = createNode("p", `Borough:\n${toiletObj.borough}`)
@@ -81,9 +94,13 @@ const renderShowPage = (toiletObj) => {
     const location = createNode("p", `Cross Streets:\n${toiletObj.location}`)
     const handicap_accessible = createNode("p", `Handicap Accessible:\n${toiletObj.handicap_accessible}`)
     const open_year_round = createNode("p", `Open Year Round:\n${toiletObj.open_year_round}`)
-    divContainer.append(img, likes, starRating, name, address, borough, neighborhood, location, handicap_accessible, open_year_round)
-    main.append(divContainer)
-    renderReviews(toiletObj.reviews)
+    //append inner items to inner div container
+    divContainer.append(img, name, starRating, likes, address, borough, neighborhood, location, handicap_accessible, open_year_round)
+    //append inner div to div container
+    toiletDiv.append(divContainer)
+    main.append(toiletDiv)
+    //render the reviews half of the page
+    renderReviews(toiletObj)
 }
 const renderStarRating = (checked, unchecked) => {
     let htmlChunk = ''
@@ -92,8 +109,8 @@ const renderStarRating = (checked, unchecked) => {
     return htmlChunk
 }
 
-const renderReviews = (toiletReviewsObj) => {
-    // reviews half of the main container div
+const renderReviews = (toiletObj) => {
+    //reviews half of the main container div
     const reviewsDiv = document.createElement("div")
     reviewsDiv.id = "reviews-div"
     //top half of reviews div
@@ -119,7 +136,7 @@ const renderReviews = (toiletReviewsObj) => {
     const renderedReviews = document.createElement("div")
     renderedReviews.className = "rendered-reviews"
     //render each comment and append
-    toiletReviewsObj.forEach(review => {
+    toiletObj.reviews.forEach(review => {
         const singleReview = renderOneReview(review)
         renderedReviews.append(singleReview)
     })
@@ -136,9 +153,11 @@ const renderOneReview = reviewObj => {
     div.dataset.reviewId = reviewObj.id
     // create the review data
     const title = createNode("h5", `${reviewObj.name} on ${reviewObj.date}`)
+    const starRating = document.createElement("div")
+    starRating.innerHTML = renderStarRating(reviewObj.rating, 5 - reviewObj.rating)
     const content = createNode("p", `\'${reviewObj.content}\'`)
     //append the review data
-    div.append(title, content)
+    div.append(title, starRating, content)
     //return review card
     return div
 }
@@ -174,9 +193,12 @@ createNode = (type, content) => {
         case "div":
             node.className = content;
             break
-        case "h5":
+        case "h4":
             node.innerText = content;
             break
+        case "h5":
+                node.innerText = content;
+                break
     }
     return node;
 }
@@ -189,6 +211,5 @@ init = () => {
 }
 
 // ANCHOR Function Calls
-// init()
+init()
 clickListeners()
-getToilet(153)
