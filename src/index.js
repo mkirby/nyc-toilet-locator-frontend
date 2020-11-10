@@ -1,6 +1,7 @@
 // ANCHOR DOM Elements
 const main = document.querySelector("#main-content-div")
 const pageControls = document.querySelector("#bottom-div")
+// const dayjs = require:("dayjs")
 let page = 1
 
 // ANCHOR Fetch Functions
@@ -9,10 +10,19 @@ const getToilet = id => {
     .then(r => r.json())
     .then(renderShowPage)
 }
-const postReview = () => {
-    fetch()
+const postReview = (body) => {
+    fetch(`http://localhost:3000/api/v1/reviews`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
     .then(r => r.json())
-    .then()
+    .then(review => {
+        getToilet(review.toilet_id)
+    })
 }
 
 // ANCHOR Event Listeners
@@ -26,8 +36,9 @@ const clickListeners = () => {
             //the container the link doesn't work
             getToilet(e.target.dataset.id)
         } else if (e.target.matches("#home-link")) {
-            //click home load index page
-            // page = 1
+            page = 1
+            init()
+        } else if (e.target.matches(".back-to-results h3")) {
             init()
         }
     })
@@ -37,12 +48,24 @@ const submitListeners = () => {
     document.addEventListener("submit", e =>{
         e.preventDefault()
         if (e.target.matches("#new-comment-form")) {
-            console.log(e.target)
+            createPost(e)
         }
     })
 }
 
 // ANCHOR Event Handlers
+const createPost = e => {
+    const review = {
+        toilet_id: parseInt(e.target.dataset.toiletId),
+        content: e.target.message.value,
+        date: dayjs(Date.now()).format('YYYY-MM-DD'),
+        name: e.target.username.value,
+        rating: parseInt(e.target.rating.value),
+        image: "https://www.atlantawatershed.org/wp-content/uploads/2017/06/default-placeholder.png"
+    }
+    postReview(review)
+}
+
 const geolocateUser = event => {
     if ("geolocation" in navigator) {
       // check if geolocation is supported/enabled on current browser
@@ -122,7 +145,13 @@ const renderShowPage = (toiletObj) => {
     //append inner items to inner div container
     divContainer.append(img, name, starRating, likes, address, borough, neighborhood, location, handicap_accessible, open_year_round)
     //append inner div to div container
-    toiletDiv.append(divContainer)
+
+    const backToResults = document.createElement("div")
+    backToResults.className = "back-to-results"
+    const backTitle = createNode("h3", "Back to Results")
+    backToResults.append(backTitle)
+
+    toiletDiv.append(divContainer, backToResults)
     main.append(toiletDiv)
     //render the reviews half of the page
     renderReviews(toiletObj)
@@ -144,10 +173,11 @@ const renderReviews = (toiletObj) => {
     const heading = createNode("h3", "Leave a Review")
     const form = document.createElement("form")
     form.id = "new-comment-form"
+    form.dataset.toiletId = toiletObj.id
     form.innerHTML = `
         <input type="text" id="username" name="username" placeholder="Name">
         <label for="rating">Star Rating:</label>
-        <select id="rating" name="rating">
+        <select id="rating" name="rating" type="number">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -162,7 +192,10 @@ const renderReviews = (toiletObj) => {
     const renderedReviews = document.createElement("div")
     renderedReviews.className = "rendered-reviews"
     //render each comment and append
-    toiletObj.reviews.forEach(review => {
+    console.log("reviews",toiletObj.reviews)
+    const sorted = toiletObj.reviews.slice().sort((a, b) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))
+    console.log("sorted", sorted)
+    sorted.forEach(review => {
         const singleReview = renderOneReview(review)
         renderedReviews.append(singleReview)
     })
