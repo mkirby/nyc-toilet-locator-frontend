@@ -17,6 +17,7 @@ renderIndex = (array) => {
         const borough = createNode("p", toiletObj.borough)
         const neighborhood = createNode("p", toiletObj.neighborhood)
         const address = createNode("p", toiletObj.address)
+        // I think we might just need address? I think that's more accurate. Let's discuss!
         const location = createNode("p", toiletObj.location)
         divCard.append(name, borough, neighborhood, address, location)
         main.append(divCard)
