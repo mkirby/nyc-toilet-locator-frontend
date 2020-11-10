@@ -18,6 +18,7 @@ const geolocate = event => {
             // for when getting location is a success
             console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
             // TODO user agrees to share location then run this:
+            // TODO need to import API key
             // getAddress(position.coords.latitude, position.coords.longitude)
             },
         function error(error_message) {
@@ -34,6 +35,14 @@ const geolocate = event => {
     }
 }
 
+function getAddress (latitude, longitude) {
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
+    .then(r => r.json())
+    .then(
+        function success (response) { console.log('User\'s Address Data is ', response) },
+        function fail (status) { console.log('Request failed.  Returned status of', status) }
+    )
+}
 
 // ANCHOR Render Functions
 renderIndex = (array) => {
