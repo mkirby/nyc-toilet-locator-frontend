@@ -1,0 +1,87 @@
+body {
+  background-color: #FFF8E7;
+  display: grid;
+  grid-template-columns: 0.3fr 1.7fr;
+  /* grid-template-rows: 0.4fr 2.2fr 0.2fr; */
+  gap: 0px 0px;
+  grid-template-areas:
+    "nav main"
+    "nav bottom";
+}
+
+/* ANCHOR NAVIGATION */
+nav {
+  grid-area: nav;
+  border: 2px solid lightblue;
+  background-color: lightblue;
+  height: 100vh;
+  padding-left: 20px;
+}
+
+#menu-links p {
+  cursor: pointer;
+}
+
+/* ANCHOR MAIN CONTENT ELEMENT */
+
+main {
+  border: 2px solid green;
+  padding: 40px;
+}
+
+/* ANCHOR BOTTOM DIVIDER */
+
+#bottom-div {
+  text-align: center;
+  grid-area: bottom;
+  border: 2px solid red;
+}
+
+/* ANCHOR MAIN CONTENT TOGGLED CLASSES */
+.main-index {
+  grid-area: main;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.main-show {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+/* ANCHOR MAIN-INDEX ELEMENTS */
+
+.toilet-card {
+  border: 2px solid orange;
+  background-color: orange;
+  width: 20%;
+  margin: 10px;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.toilet-card img {
+  width: 100%;
+}
+
+/* ANCHOR MAIN-SHOW ELEMENTS */
+.selected-toilet {
+  border: 2px solid orange;
+  background-color: orange;
+}
+
+#comments-div {
+  border: 2px solid orange;
+  background-color: yellow;
+}
+
+#comments-div p {
+  border: 2px solid black;
+  background-color: cyan;
+}
+
+.checked {
+  color: gold;
+}

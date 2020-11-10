@@ -3,21 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./src/index.js" defer></script>
     <link rel="stylesheet" href="./styles/main.css">
-    <title>Toilet Locator</title>
+    <script src="./src/index.js" defer></script>
+    <title>NYC Toilet Locator</title>
 </head>
 <body>
-    <header>
+    <nav id="navigation-menu">
+        <!-- SITE TITLE OR LOGO -->
         <h2>Yelp for Toilets</h2>
-    </header>
+        
+        <!-- MENU ITEMS/ LINKS -->
+        <div id="menu-links">
+            <p>Home</p>
+            <p>Other Menu Item</p>
+        </div>
 
-    <nav>
-        <ul>
-            <li>example</li>
-            <li>example</li>
-            <li>example</li>
-        </ul>
+        <!-- FILTER ALL RESTROOMS -->
+        <div id="filter-settings">
+            <form action="" method="get">
+                <label for="borough">Filter by Borough:</label><br>
+                <select name="borough" id="borough">
+                    <option value="Bronx">Bronx</option>
+                    <option value="Manhattan">Manhattan</option>
+                    <option value="Brooklyn">Brooklyn</option>
+                    <option value="Queens">Queens</option>
+                    <option value="Staten Island">Staten Island</option>
+                </select>
+                <br><br>
+                <label for="neighborhood">Filter by Neighborhood:</label><br>
+                <select name="neighborhood" id="neighborhood">
+                    <option value="Neighborhood">Neighborhood Opt</option>
+                </select>
+
+                <br><br>
+
+                <div id="filter-options">
+                    <input type="checkbox" id="handicap-accessible" name="handicap-accessible">
+                    <label for="handicap-accessible">Handicap Accessible</label>
+                    <br>
+                    <input type="checkbox" id="year-round" name="year-round">
+                    <label for="year-round">Open Year Round</label>
+                </div>
+
+                <br>
+                <div>
+                    <input type="submit" value="Filter Results">
+                </div>
+            </form>
+        </div>
+        
+        <!-- should replace br with div padding -->
+        <br><br>
+
+        <!-- SEARCH ALL RESTROOMS BY NAME -->
+        <div id="search-by-name">
+            <form action="" method="get">
+                <input type="text" id="name" name="name" placeholder="Search By Name">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        <!-- Ask for Geolocation Data to Filter -->
+        <div id="filter-near-me">
+            <button>Restrooms Near Me</button>
+        </div>
+
+        <!-- SHOVE LINKS AND COPYRIGHT TO B TTOM-->
+        <footer>
+            <h4>Link to Github</h4>
+        </footer>
+
     </nav>
+
+    <!-- toggle class depending on js view render - either "main-index" or "main-show" -->
+    <main class="main-show">
+        <!-- JS RENDER CONTENT -->
+        <!-- <div class="toilet-card">
+            <img src="https://ww4.hdnux.com/photos/07/25/65/1924475/9/1024x1024.jpg" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div>
+        <div class="toilet-card">
+            <img src="https://www.nydailynews.com/resizer/cicO2EeksxMqfAv4mjZom2-Sqj8=/fit-in/800x533/smart/filters:fill(black)/arc-anglerfish-arc2-prod-tronc.s3.amazonaws.com/public/CZ6T6BECZEAQZMWPSV66VLSTWQ.jpg" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div>
+        <div class="toilet-card">
+            <img src="https://static01.nyt.com/images/2009/12/09/nyregion/toilet.480.jpg" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div>
+        <div class="toilet-card">
+            <img src="https://static01.nyt.com/images/2019/03/28/nyregion/28subwaybathrooms5-print/subwaybathrooms04-articleLarge.jpg?quality=90&auto=webp" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div>
+        <div class="toilet-card">
+            <img src="https://static01.nyt.com/images/2019/03/27/nyregion/subwaybathrooms-chain/merlin_151718061_4b537191-3374-4a01-8e80-c81fd876986c-articleLarge.jpg?quality=75&auto=webp&disable=upscale" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div>
+        <div class="toilet-card">
+            <img src="https://www.dailynews.com/wp-content/uploads/2019/08/LDN-L-NOHO-BATHROOM-4-1-1.jpg" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div>
+        <div class="toilet-card">
+            <img src="https://assets3.thrillist.com/v1/image/1856875/1000x666.6666666666666/flatten;crop;jpeg_quality=70" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div>
+        <div class="toilet-card">
+            <img src="https://cdn.cnn.com/cnnnext/dam/assets/200619190852-public-restroom-coronavirus-large-169.jpg" alt="ctown-bathroom">
+            <h3>Name of Toilet</h3>
+            <p>Address: location</p>
+        </div> -->
+
+
+        <div class="selected-toilet">
+            <img src="https://cdn.cnn.com/cnnnext/dam/assets/200619190852-public-restroom-coronavirus-large-169.jpg"
+                alt="ctown-bathroom"><br>
+                <button>100 Likes!</button>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+            <h3>Name of Toilet</h3>
+            <p>Address: address</p>
+            <p>Borough: Borough</p>
+            <p>Neighborhood: Neighborhood</p>
+            <p>Location: location</p>
+            <p>Handicap-Accessible: true</p>
+            <p>Open Year Round?: False</p>
+            
+        </div>
+        
+        <div id="comments-div">
+            <form action="" method="post">
+                <div>
+                    <textarea name="review" id="review" style="margin: 0px; width: 882px; height: 139px;">Hey... say something!
+                    </textarea>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+            <p>Toilet Comment</p>
+            <p>Toilet Comment</p>
+        </div>
+
+    </main>
+
+    <div id="bottom-div">
+        <button>Left</button>
+        <p>Left --- Right</p>
+        <button>Left</button>
+    </div>
+
 </body>
 </html>
