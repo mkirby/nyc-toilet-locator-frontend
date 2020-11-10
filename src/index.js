@@ -21,6 +21,14 @@ const clickListeners = () => {
         //if user clicks "Restrooms Near Me" button
         if (e.target.matches("#filter-near-me button")) {
             geolocateUser(e)
+        } else if (e.target.matches(".toilet-card")) {
+            // TODO not accurate enough if you click elements inside
+            //the container the link doesn't work
+            getToilet(e.target.dataset.id)
+        } else if (e.target.matches("#home-link")) {
+            //click home load index page
+            // page = 1
+            init()
         }
     })
 }
@@ -79,8 +87,9 @@ const averageRating = toiletReviews => {
 
 // ANCHOR Render Functions
 const renderShowPage = (toiletObj) => {
-    //clear the main container
-    main.innerHTML = ''
+    //clear the main container and page controls
+    main.innerHTML = ""
+    pageControls.innerHTML = ""
     //clear any other classNames on the main container
     main.className = ""
     //assign the correct class
@@ -179,9 +188,16 @@ const renderOneReview = reviewObj => {
 }
 
 renderIndex = (array) => {
-    while (main.querySelector(".toilet-card")) {
-        main.querySelector(".toilet-card").remove()
-    }
+    //clear the main container
+    main.innerHTML = ''
+    //clear any other classNames on the main container
+    main.className = ""
+    //assign the correct class
+    main.classList.add("main-index")
+
+    // while (main.querySelector(".toilet-card")) {
+    //     main.querySelector(".toilet-card").remove()
+    // }
     array.forEach(toiletObj => {
         const divCard = createNode("div", "toilet-card")
         divCard.dataset.id = toiletObj.id
@@ -273,8 +289,8 @@ function init() {
 }
 
 // ANCHOR Function Calls
-// init()
+init()
 clickListeners()
 submitListeners()
-getToilet(167)
+// getToilet(167)
 
