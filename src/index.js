@@ -1,11 +1,41 @@
+// ANCHOR DOM Elements
 const main = document.querySelector("main")
 
-init = () => {
-    fetch("http://localhost:3000/api/v1/toilets?page=1")
-    .then(r => r.json())
-    .then(data => renderIndex(data))
+// ANCHOR Fetch Functions
+
+// ANCHOR Event Listeners
+document.addEventListener("click", e => {
+    //if user clicks "Restrooms Near Me" button
+    if (e.target.matches("#filter-near-me button")) {geolocate(e)}
+})
+
+// ANCHOR Event Handlers
+const geolocate = event => {
+    if ("geolocation" in navigator) {
+      // check if geolocation is supported/enabled on current browser
+        navigator.geolocation.getCurrentPosition(
+            function success(position) {
+            // for when getting location is a success
+            console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
+            // TODO user agrees to share location then run this:
+            // getAddress(position.coords.latitude, position.coords.longitude)
+            },
+        function error(error_message) {
+            // for when getting location results in an error
+            console.error('An error has occured while retrieving ' + 'location', error_message)
+            // TODO issue with getting location then run this:
+            // ipLookUp()
+        });
+    } else {
+        // geolocation is not supported - get your location some other way
+        console.log('geolocation is not enabled on this browser')
+        // TODO user has location data turned off run this:
+        // ipLookUp()
+    }
 }
 
+
+// ANCHOR Render Functions
 renderIndex = (array) => {
     while (main.querySelector(".toilet-card")) {
         main.querySelector(".toilet-card").remove()
@@ -41,5 +71,12 @@ createNode = (type, content) => {
     return node;
 }
 
+// ANCHOR Initial Render
+init = () => {
+    fetch("http://localhost:3000/api/v1/toilets?page=1")
+    .then(r => r.json())
+    .then(data => renderIndex(data))
+}
 
+// ANCHOR Function Calls
 init()
