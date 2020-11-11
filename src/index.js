@@ -387,12 +387,15 @@ const averageRating = toiletReviews => {
 
 // ANCHOR Initial Render
 const loadMainDivContent = () => {
-    console.log("rendered")
     searched ? searchToilets(filterQuery) : getAllToilets()
+}
+
+const pageListeners = () => {
+    clickListeners()
+    submitListeners()
+    onFilterChangeListeners()
 }
 
 // ANCHOR Function Calls
 loadMainDivContent()
-clickListeners()
-submitListeners()
-onFilterChangeListeners()
+pageListeners()
