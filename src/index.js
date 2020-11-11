@@ -13,6 +13,7 @@ const getAllToilets = () => {
             console.log(data)
             renderIndexPage(data.toilets)
             renderPageControls(data.lastPage)
+            renderBoroughDropdown()
             renderNeighborhoodsDropdown(data.neighborhoods)
         })
 }
@@ -88,11 +89,14 @@ const clickListeners = () => {
 const submitListeners = () => {
     document.addEventListener("submit", e =>{
         e.preventDefault()
-        if (e.target.matches("#new-comment-form")) {
-            createPost(e)
-        } else if (e.target.matches("#filter-borough")) {
+    })
+}
+
+const onFilterChangeListeners = () => {
+    document.addEventListener("change", e => {
+        if (e.target.matches("#borough-dropdown")) {
             filterByBorough(e)
-        } else if (e.target.matches("#filter-neighborhood")) {
+        } else if (e.target.matches("#neighborhood-dropdown")) {
             filterByNeighborhood(e)
         }
     })
@@ -103,13 +107,13 @@ const submitListeners = () => {
 const filterByBorough = e => {
     searched = true
     page = 1
-    searchToilets(e.target.borough.value)
+    searchToilets(e.target.value)
 }
 
 const filterByNeighborhood = e => {
     searched = true
     page = 1
-    searchToilets(e.target.neighborhood.value)
+    searchToilets(e.target.value)
 }
 
 const createPost = e => {
@@ -162,11 +166,25 @@ const removeReview = (e) => {
 }
 
 // ANCHOR Render Functions
+const renderBoroughDropdown = () => {
+    const dropdown = document.querySelector("#borough-dropdown")
+    const boroughs = ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"].sort()
+    clearElement(dropdown)
+    const defaultOption = createNode("option", "Filter by Borough")
+    defaultOption.setAttribute("value", ``)
+    defaultOption.setAttribute("disabled", "")
+    defaultOption.setAttribute("selected", "")
+    defaultOption.setAttribute("hidden", "")
+    dropdown.append(defaultOption)
+    boroughs.forEach(ele => {
+        dropdown.append(createNode("option", ele))
+    })
+}
 
 const renderNeighborhoodsDropdown = (hoodArray) => {
-    const dropdown = document.querySelector("#neighborhood")
+    const dropdown = document.querySelector("#neighborhood-dropdown")
     clearElement(dropdown)
-    const defaultOption = createNode("option", "Choose a Neighborhood")
+    const defaultOption = createNode("option", "Filter by Neighborhood")
     defaultOption.setAttribute("value", ``)
     defaultOption.setAttribute("disabled", "")
     defaultOption.setAttribute("selected", "")
@@ -377,3 +395,4 @@ const loadMainDivContent = () => {
 loadMainDivContent()
 clickListeners()
 submitListeners()
+onFilterChangeListeners()

@@ -29,37 +29,34 @@
 
         <!-- FILTER ALL RESTROOMS -->
         <div id="filter-settings">
-            <!-- Filter by Borough -->
+            <!-- FILTER BY BOROUGH -->
             <form id="filter-borough">
                 <label for="borough">Filter by Borough:</label><br>
-                <select name="borough" id="borough">
-                    <option value="Bronx">Bronx</option>
-                    <option value="Manhattan">Manhattan</option>
-                    <option value="Brooklyn">Brooklyn</option>
-                    <option value="Queens">Queens</option>
-                    <option value="Staten Island">Staten Island</option>
+                <select name="borough" id="borough-dropdown">
+                    <!-- RENDER BOROUGH OPTIONS -->
                 </select>
-                <br><br>
+                <!-- <br><br>
                 <div>
                     <input type="submit" value="Filter Results">
-                </div>
+                </div> -->
             </form><br>
 
-            <!-- Filter by Neighborhood -->
+            <!-- FILTER BY NEIGHBORHOOD -->
             <form id="filter-neighborhood">
                 <label for="neighborhood">Filter by Neighborhood:</label><br>
-                <select name="neighborhood" id="neighborhood">
+                <select name="neighborhood" id="neighborhood-dropdown">
                     <!-- RENDER NEIGHBORHOOD OPTIONS -->
-                </select><br><br>
+                </select>
+                <!-- <br><br>
                 <div>
                     <input type="submit" value="Filter Results">
-                </div>
+                </div> -->
             </form>
 
         </div>
         
         <!-- should replace br with div padding -->
-        <br><br>
+        <br>
 
         <!-- SEARCH ALL RESTROOMS BY NAME -->
         <div id="search-by-name">
