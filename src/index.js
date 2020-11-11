@@ -1,8 +1,9 @@
 // ANCHOR DOM Elements
 const main = document.querySelector("#main-content-div")
 const pageControls = document.querySelector("#bottom-div")
-// const dayjs = require:("dayjs")
 let page = 1
+let searched = false
+let filterQuery
 
 // ANCHOR Fetch Functions
 const getToilet = id => {
@@ -36,10 +37,11 @@ const clickListeners = () => {
             //the container the link doesn't work
             getToilet(e.target.dataset.id)
         } else if (e.target.matches("#home-link")) {
+            searched = false
             page = 1
             init()
         } else if (e.target.matches(".back-to-results h3")) {
-            init()
+            searched ? searchToilets(filterQuery) : init()
         }
     })
 }
@@ -49,11 +51,27 @@ const submitListeners = () => {
         e.preventDefault()
         if (e.target.matches("#new-comment-form")) {
             createPost(e)
+        } else if (e.target.matches("#filter-borough")) {
+            searched = true
+            page = 1
+            filterByBorough(e)
+        } else if (e.target.matches("#filter-neighborhood")) {
+            searched = true
+            page = 1
+            filterByNeighborhood(e)
         }
     })
 }
 
 // ANCHOR Event Handlers
+const filterByBorough = e => {
+    searchToilets(e.target.borough.value)
+}
+
+const filterByNeighborhood = e => {
+    searchToilets(e.target.neighborhood.value)
+}
+
 const createPost = e => {
     const review = {
         toilet_id: parseInt(e.target.dataset.toiletId),
@@ -109,6 +127,16 @@ const averageRating = toiletReviews => {
 }
 
 // ANCHOR Render Functions
+const renderNeighborhoods = (hoodArray) => {
+    const dropdown = document.querySelector("#neighborhood")
+    while (dropdown.firstElementChild) {
+        dropdown.firstElementChild.remove()
+    }
+    hoodArray.forEach(hood => {
+        dropdown.append(createNode("option", hood))
+    })
+}
+
 const renderShowPage = (toiletObj) => {
     //clear the main container and page controls
     main.innerHTML = ""
@@ -252,14 +280,14 @@ function renderPageControls(maxPage) {
     const backButton = createNode("button", "<")
     backButton.addEventListener("click", () => {
         page--
-        init()
+        searched ? searchToilets(filterQuery) : init()
     })
     const pageNumbers = createNode("p", `Page ${page} of ${maxPage}`)
 
     const nextButton = createNode("button", ">")
     nextButton.addEventListener("click", () => {
         page++
-        init()
+        searched ? searchToilets(filterQuery) : init()
     })
 
     backButton.className = "page-controls"
@@ -267,9 +295,12 @@ function renderPageControls(maxPage) {
     nextButton.className = "page-controls"
     pageControls.append(backButton, pageNumbers, nextButton)
     
-    if (page == 1) {
+    if (page == 1 && page == maxPage) {
         backButton.style.display = "none"
-    } else if (page == maxPage) {
+        nextButton.style.display = "none";
+    } else if (page == 1) {
+        backButton.style.display = "none"
+    }else if (page == maxPage) {
         nextButton.style.display = "none";
     } else {
         nextButton.style.display = "";
@@ -300,30 +331,42 @@ createNode = (type, content) => {
         case "h5":
                 node.innerText = content;
                 break
+        case "option":
+            node.innerText = content;
+            node.value = content;
+            break
     }
     return node;
 }
 
-function getMaxPage() {
-    return fetch("http://localhost:3000/api/v1/info")
-    .then(r => r.json())
-}
-
 // ANCHOR Initial Render
 function init() {
-    let maxPage
-    getMaxPage().then(data => maxPage = data)
     fetch(`http://localhost:3000/api/v1/toilets?page=${page}`)
         .then(r => r.json())
         .then(data => {
-            renderIndex(data)
-            renderPageControls(maxPage)
+            console.log(data)
+            renderIndex(data.toilets)
+            renderPageControls(data.lastPage)
+            renderNeighborhoods(data.neighborhoods)
         })
+}
+const searchToilets = query => {
+    filterQuery = query
+    fetch(`http://localhost:3000/api/v1/toilets?query=${query}&page=${page}`)
+    .then(r => r.json())
+    .then(data => {
+        console.log(data)
+        renderIndex(data.toilets)
+        renderPageControls(data.lastPage)
+        if (query == "Manhattan" ||query == "Brooklyn"||query == "Queens"||query == "Bronx"||query == "Staten Island") {
+            renderNeighborhoods(data.neighborhoods)
+        }
+        
+    })
 }
 
 // ANCHOR Function Calls
 init()
 clickListeners()
 submitListeners()
-// getToilet(167)
 

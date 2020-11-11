@@ -29,7 +29,7 @@
 
         <!-- FILTER ALL RESTROOMS -->
         <div id="filter-settings">
-            <form action="" method="get">
+            <form id="filter-borough">
                 <label for="borough">Filter by Borough:</label><br>
                 <select name="borough" id="borough">
                     <option value="Bronx">Bronx</option>
@@ -39,14 +39,23 @@
                     <option value="Staten Island">Staten Island</option>
                 </select>
                 <br><br>
+                <div>
+                    <input type="submit" value="Filter Results">
+                </div>
+            </form><br>
+            <form id="filter-neighborhood">
                 <label for="neighborhood">Filter by Neighborhood:</label><br>
                 <select name="neighborhood" id="neighborhood">
-                    <option value="Neighborhood">Neighborhood Opt</option>
-                </select>
+                    <!-- RENDER OPTIONS -->
+                </select><br><br>
+                <div>
+                    <input type="submit" value="Filter Results">
+                </div>
+            </form>
+                
 
-                <br><br>
 
-                <div id="filter-options">
+                <!-- <div id="filter-options">
                     <input type="checkbox" id="handicap-accessible" name="handicap-accessible">
                     <label for="handicap-accessible">Handicap Accessible</label>
                     <br>
@@ -54,11 +63,9 @@
                     <label for="year-round">Open Year Round</label>
                 </div>
 
-                <br>
-                <div>
-                    <input type="submit" value="Filter Results">
-                </div>
-            </form>
+                <br> -->
+                
+            
         </div>
         
         <!-- should replace br with div padding -->
