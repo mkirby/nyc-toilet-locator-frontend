@@ -6,10 +6,33 @@ let searched = false
 let filterQuery
 
 // ANCHOR Fetch Functions
-const getToilet = id => {
+const getAllToilets = () => {
+    fetch(`http://localhost:3000/api/v1/toilets?page=${page}`)
+        .then(r => r.json())
+        .then(data => {
+            console.log(data)
+            renderIndexPage(data.toilets)
+            renderPageControls(data.lastPage)
+            renderNeighborhoodsDropdown(data.neighborhoods)
+        })
+}
+const getToiletById = id => {
     fetch(`http://localhost:3000/api/v1/toilets/${id}`)
     .then(r => r.json())
     .then(renderShowPage)
+}
+const searchToilets = query => {
+    filterQuery = query
+    fetch(`http://localhost:3000/api/v1/toilets?query=${query}&page=${page}`)
+    .then(r => r.json())
+    .then(data => {
+        console.log(data)
+        renderIndexPage(data.toilets)
+        renderPageControls(data.lastPage)
+        if (query == "Manhattan" ||query == "Brooklyn"||query == "Queens"||query == "Bronx"||query == "Staten Island") {
+            renderNeighborhoodsDropdown(data.neighborhoods)
+        }
+    })
 }
 const postReview = (body) => {
     fetch(`http://localhost:3000/api/v1/reviews`,{
@@ -22,8 +45,16 @@ const postReview = (body) => {
     })
     .then(r => r.json())
     .then(review => {
-        getToilet(review.toilet_id)
+        getToiletById(review.toilet_id)
     })
+}
+const getAddress = (latitude, longitude) => {
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
+    .then(r => r.json())
+    .then(
+        function success (response) { console.log('User\'s Address Data is ', response) },
+        function fail (status) { console.log('Request failed.  Returned status of', status) }
+    )
 }
 
 // ANCHOR Event Listeners
@@ -33,17 +64,14 @@ const clickListeners = () => {
         if (e.target.matches("#filter-near-me button")) {
             geolocateUser(e)
         } else if (e.target.matches(".toilet-card")) {
-            // TODO not accurate enough if you click elements inside
-            //the container the link doesn't work
-            getToilet(e.target.dataset.id)
+            // TODO not accurate enough - if you click elements inside the container the link doesn't work
+            getToiletById(e.target.dataset.id)
         } else if (e.target.matches("#home-link")) {
             searched = false
             page = 1
-            init()
+            getAllToilets()
         } else if (e.target.matches(".back-to-results h3")) {
-            searched ? searchToilets(filterQuery) : init()
-        } else if (e.target.matches("#add-entry")) {
-            renderAdd()
+            loadMainDivContent()
         }
     })
 }
@@ -54,23 +82,24 @@ const submitListeners = () => {
         if (e.target.matches("#new-comment-form")) {
             createPost(e)
         } else if (e.target.matches("#filter-borough")) {
-            searched = true
-            page = 1
             filterByBorough(e)
         } else if (e.target.matches("#filter-neighborhood")) {
-            searched = true
-            page = 1
             filterByNeighborhood(e)
         }
     })
 }
 
 // ANCHOR Event Handlers
+
 const filterByBorough = e => {
+    searched = true
+    page = 1
     searchToilets(e.target.borough.value)
 }
 
 const filterByNeighborhood = e => {
+    searched = true
+    page = 1
     searchToilets(e.target.neighborhood.value)
 }
 
@@ -111,42 +140,20 @@ const geolocateUser = event => {
     }
 }
 
-const getAddress = (latitude, longitude) => {
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
-    .then(r => r.json())
-    .then(
-        function success (response) { console.log('User\'s Address Data is ', response) },
-        function fail (status) { console.log('Request failed.  Returned status of', status) }
-    )
-}
-
-const averageRating = toiletReviews => {
-    sum = 0
-    toiletReviews.forEach(review => {
-        sum += review.rating
-    })
-    return average = Math.floor(sum / toiletReviews.length)
-}
-
 // ANCHOR Render Functions
-const renderNeighborhoods = (hoodArray) => {
+
+const renderNeighborhoodsDropdown = (hoodArray) => {
     const dropdown = document.querySelector("#neighborhood")
-    while (dropdown.firstElementChild) {
-        dropdown.firstElementChild.remove()
-    }
+    clearElement(dropdown)
     hoodArray.forEach(hood => {
         dropdown.append(createNode("option", hood))
     })
 }
 
 const renderShowPage = (toiletObj) => {
-    //clear the main container and page controls
-    main.innerHTML = ""
-    pageControls.innerHTML = ""
-    //clear any other classNames on the main container
-    main.className = ""
-    //assign the correct class
-    main.classList.add("main-show")
+    clearElement(main)
+    clearElement(pageControls)
+    main.className = "main-show"
     //show toilet half of the main container div
     const toiletDiv = document.createElement("div")
     toiletDiv.id = "toilet-div"
@@ -221,10 +228,8 @@ const renderReviews = (toiletObj) => {
     //bottom half of reviews div
     const renderedReviews = document.createElement("div")
     renderedReviews.className = "rendered-reviews"
-    //render each comment and append
-    console.log("reviews",toiletObj.reviews)
+    //sort reviews by date then render and append
     const sorted = toiletObj.reviews.slice().sort((a, b) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))
-    console.log("sorted", sorted)
     sorted.forEach(review => {
         const singleReview = renderOneReview(review)
         renderedReviews.append(singleReview)
@@ -239,57 +244,49 @@ const renderOneReview = reviewObj => {
     const div = document.createElement("div")
     div.className = "review"
     div.dataset.reviewId = reviewObj.id
+    //create delete button
+    const deleteButton = createNode("button", "X")
+    deleteButton.className = "delete-button"
     // create the review data
     const title = createNode("h5", `${reviewObj.name} on ${reviewObj.date}`)
     const starRating = document.createElement("div")
     starRating.innerHTML = renderStarRating(reviewObj.rating, 5 - reviewObj.rating)
     const content = createNode("p", `\'${reviewObj.content}\'`)
     //append the review data
-    div.append(title, starRating, content)
+    div.append(title, deleteButton, starRating, content)
     //return review card
     return div
 }
 
-renderIndex = (array) => {
-    //clear the main container
-    main.innerHTML = ''
-    //clear any other classNames on the main container
-    main.className = ""
-    //assign the correct class
-    main.classList.add("main-index")
-
-    // while (main.querySelector(".toilet-card")) {
-    //     main.querySelector(".toilet-card").remove()
-    // }
-    array.forEach(toiletObj => {
+const renderIndexPage = (toiletArray) => {
+    clearElement(main)
+    main.className = "main-index"
+    toiletArray.forEach(toiletObj => {
         const divCard = createNode("div", "toilet-card")
         divCard.dataset.id = toiletObj.id
         const name = createNode("h3", toiletObj.name)
         const borough = createNode("p", toiletObj.borough)
         const neighborhood = createNode("p", toiletObj.neighborhood)
         const address = createNode("p", toiletObj.address)
-        // I think we might just need address? I think that's more accurate. Let's discuss!
         const location = createNode("p", toiletObj.location)
         divCard.append(name, borough, neighborhood, address, location)
         main.append(divCard)
     })
 }
 
-function renderPageControls(maxPage) {
-    while (pageControls.firstElementChild) {
-        pageControls.firstElementChild.remove()
-    }
+const renderPageControls = (lastPage) => {
+    clearElement(pageControls)
     const backButton = createNode("button", "<")
     backButton.addEventListener("click", () => {
         page--
-        searched ? searchToilets(filterQuery) : init()
+        loadMainDivContent()
     })
-    const pageNumbers = createNode("p", `Page ${page} of ${maxPage}`)
+    const pageNumbers = createNode("p", `Page ${page} of ${lastPage}`)
 
     const nextButton = createNode("button", ">")
     nextButton.addEventListener("click", () => {
         page++
-        searched ? searchToilets(filterQuery) : init()
+        loadMainDivContent()
     })
 
     backButton.className = "page-controls"
@@ -297,12 +294,12 @@ function renderPageControls(maxPage) {
     nextButton.className = "page-controls"
     pageControls.append(backButton, pageNumbers, nextButton)
     
-    if (page == 1 && page == maxPage) {
+    if (page == 1 && page == lastPage) {
         backButton.style.display = "none"
         nextButton.style.display = "none";
     } else if (page == 1) {
         backButton.style.display = "none"
-    }else if (page == maxPage) {
+    }else if (page == lastPage) {
         nextButton.style.display = "none";
     } else {
         nextButton.style.display = "";
@@ -354,63 +351,43 @@ function renderAdd() {
 
 
 // ANCHOR Helper Functions
-createNode = (type, content) => {
+const createNode = (type, content) => {
     let node = document.createElement(type);
     switch (type) {
-        case "h3":
-            node.innerText = content;
-            break
-        case "p":
-            node.innerText = content;
-            break
-        case "button":
-            node.innerText = content;
-            break
         case "div":
             node.className = content;
             break
-        case "h4":
-            node.innerText = content;
-            break
-        case "h5":
-                node.innerText = content;
-                break
         case "option":
             node.innerText = content;
             node.value = content;
+            break
+        default:
+            node.innerText = content;
             break
     }
     return node;
 }
 
-// ANCHOR Initial Render
-function init() {
-    fetch(`http://localhost:3000/api/v1/toilets?page=${page}`)
-        .then(r => r.json())
-        .then(data => {
-            console.log(data)
-            renderIndex(data.toilets)
-            renderPageControls(data.lastPage)
-            renderNeighborhoods(data.neighborhoods)
-        })
+const clearElement = parentElement => {
+    while (parentElement.firstElementChild) {
+        parentElement.firstElementChild.remove()
+    }
 }
-const searchToilets = query => {
-    filterQuery = query
-    fetch(`http://localhost:3000/api/v1/toilets?query=${query}&page=${page}`)
-    .then(r => r.json())
-    .then(data => {
-        console.log(data)
-        renderIndex(data.toilets)
-        renderPageControls(data.lastPage)
-        if (query == "Manhattan" ||query == "Brooklyn"||query == "Queens"||query == "Bronx"||query == "Staten Island") {
-            renderNeighborhoods(data.neighborhoods)
-        }
-        
+
+const averageRating = toiletReviews => {
+    sum = 0
+    toiletReviews.forEach(review => {
+        sum += review.rating
     })
+    return average = Math.floor(sum / toiletReviews.length)
+}
+
+// ANCHOR Initial Render
+const loadMainDivContent = () => {
+    searched ? searchToilets(filterQuery) : getAllToilets()
 }
 
 // ANCHOR Function Calls
-init()
+loadMainDivContent()
 clickListeners()
 submitListeners()
-

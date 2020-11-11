@@ -82,7 +82,7 @@ main {
 }
 .selected-toilet {
   background-color: white;
-  padding: 10px;
+  padding: 20px;
   margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   /* border: 2px solid orange; */
@@ -94,7 +94,7 @@ main {
 
 .back-to-results {
   background-color: white;
-  padding: 10px;
+  padding: 20px;
   margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
@@ -115,16 +115,9 @@ main {
   /* border: 2px solid orange; */
 }
 
-#reviews-div .review {
-  background-color: white;
-  padding: 10px;
-  margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 .add-review-div {
   grid-area: add;
-  padding: 10px;
+  padding: 0 20px 20px 20px;
   margin: 10px;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -132,6 +125,21 @@ main {
 
 .rendered-reviews {
   grid-area: reviews;
+}
+
+.rendered-reviews .review {
+  background-color: white;
+  padding: 1px 20px;
+  margin: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+}
+
+.review .delete-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
 }
 
 .checked {
