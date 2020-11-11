@@ -19,7 +19,7 @@ const getAllToilets = () => {
 const getToiletById = id => {
     fetch(`http://localhost:3000/api/v1/toilets/${id}`)
     .then(r => r.json())
-    .then(renderShowPage)
+    .then(renderShowPage)  
 }
 const searchToilets = query => {
     filterQuery = query
@@ -48,6 +48,20 @@ const postReview = (body) => {
         getToiletById(review.toilet_id)
     })
 }
+
+const postToilet = (body) => {
+    fetch(`http://localhost:3000/api/v1/toilets`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+    .then(r => r.json())
+    .then(renderShowPage)
+}
+
 const getAddress = (latitude, longitude) => {
     fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
     .then(r => r.json())
@@ -72,12 +86,14 @@ const clickListeners = () => {
             getAllToilets()
         } else if (e.target.matches(".back-to-results h3")) {
             loadMainDivContent()
+        } else if (e.target.matches("#add-entry")) {
+            renderAdd()
         }
     })
 }
 
 const submitListeners = () => {
-    document.addEventListener("submit", e =>{
+    document.addEventListener("submit", e => {
         e.preventDefault()
         if (e.target.matches("#new-comment-form")) {
             createPost(e)
@@ -85,11 +101,40 @@ const submitListeners = () => {
             filterByBorough(e)
         } else if (e.target.matches("#filter-neighborhood")) {
             filterByNeighborhood(e)
+        } else if (e.target.matches("#new-toilet")) {
+            createToilet(e)
+        }
+    })
+}
+
+const changeListeners = () => {
+    document.addEventListener("change", e => {
+        if (e.target.matches("#handicap-check")) {
+            e.target.value = !e.target.value
+        } else if (e.target.matches("#year-check")) {
+            e.target.value = !e.target.value
         }
     })
 }
 
 // ANCHOR Event Handlers
+
+const createToilet = e => {
+    const configObj = {
+        name: e.target.name.value,
+        location: e.target.location.value,
+        handicap_accessible: e.target.handicap.value,
+        open_year_round: e.target.year.value,
+        borough: e.target.borough.value,
+        address: e.target.address.value,
+        neighborhood: e.target.neighborhood.value,
+        likes: 0,
+        image: e.target.image.value,
+        latitude: 1.1,
+        longitude: 1.1
+    }
+    postToilet(configObj)
+}
 
 const filterByBorough = e => {
     searched = true
@@ -161,7 +206,7 @@ const renderShowPage = (toiletObj) => {
     const divContainer = createNode("div", "selected-toilet")
     //featured image
     const img = document.createElement("img")
-    img.src = "https://www.atlantawatershed.org/wp-content/uploads/2017/06/default-placeholder.png"
+    img.src = toiletObj.image
     img.alt = toiletObj.name
     //likes and rating
     const starRating = document.createElement("div")
@@ -264,12 +309,13 @@ const renderIndexPage = (toiletArray) => {
     toiletArray.forEach(toiletObj => {
         const divCard = createNode("div", "toilet-card")
         divCard.dataset.id = toiletObj.id
+        const img = createNode("img", toiletObj.image)
         const name = createNode("h3", toiletObj.name)
         const borough = createNode("p", toiletObj.borough)
         const neighborhood = createNode("p", toiletObj.neighborhood)
         const address = createNode("p", toiletObj.address)
         const location = createNode("p", toiletObj.location)
-        divCard.append(name, borough, neighborhood, address, location)
+        divCard.append(img, name, borough, neighborhood, address, location)
         main.append(divCard)
     })
 }
@@ -310,12 +356,10 @@ const renderPageControls = (lastPage) => {
 
 
 function renderAdd() {
-     //clear the main container and page controls
-    main.innerHTML = ""
-    pageControls.innerHTML = ""
-    //clear any other classNames on the main container
+    clearElement(main)
+    clearElement(pageControls)
     main.className = "main-add"
-    //assign the correct class
+
     const newToilet = document.createElement("form")
     newToilet.id = "new-toilet"
     newToilet.innerHTML = `
@@ -332,15 +376,20 @@ function renderAdd() {
     </select>
     
     <input type="text" id="neighborhood" name="neighborhood" class="semi-full" placeholder="Neighborhood..."><br><br>
-    <label for="location">Specific Location:</label><br>
-    <input type="location" id="location" name="location" class="full" placeholder="Specific Location for this toilet..."><br><br>
-    <input type="checkbox" id="handicap" name="handicap" value="false">
+    <label for="address">Address:</label><br>
+    <input type="text" id="address" name="address" class="full" placeholder="Full Address..."><br><br>
+    <label for="location">Specific Location Directions:</label><br>
+    <input type="text" id="location" name="location" class="full" placeholder="ie. between first & second ave..."><br><br>
+    <label for="image">Image URL:</label><br>
+    <input type="text" id="image" name="image" class="full" placeholder="Image URL..."><br><br>
+    <input type="checkbox" id="handicap-check" name="handicap" value="false">
     <label for="handicap">Handicap Accessible?</label>
-    <input type="checkbox" id="year" name="year" value="false">
+    <input type="checkbox" id="year-check" name="year" value="false">
     <label for="year">Open Year Round?</label><br><br>
     <input type="submit" value="Submit">
     `
-
+    pageControls.innerHTML = `
+    <div class="back-to-results"><h3>Back to Results</h3></div>`
     
     main.append(newToilet)
     
@@ -356,6 +405,9 @@ const createNode = (type, content) => {
     switch (type) {
         case "div":
             node.className = content;
+            break
+        case "img":
+            node.src = content;
             break
         case "option":
             node.innerText = content;
