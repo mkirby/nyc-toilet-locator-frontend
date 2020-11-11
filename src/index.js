@@ -42,6 +42,8 @@ const clickListeners = () => {
             init()
         } else if (e.target.matches(".back-to-results h3")) {
             searched ? searchToilets(filterQuery) : init()
+        } else if (e.target.matches("#add-entry")) {
+            renderAdd()
         }
     })
 }
@@ -308,6 +310,48 @@ function renderPageControls(maxPage) {
     }
     
 }
+
+
+function renderAdd() {
+     //clear the main container and page controls
+    main.innerHTML = ""
+    pageControls.innerHTML = ""
+    //clear any other classNames on the main container
+    main.className = "main-add"
+    //assign the correct class
+    const newToilet = document.createElement("form")
+    newToilet.id = "new-toilet"
+    newToilet.innerHTML = `
+    <h2>Add New NYC Public Toilet</h4>
+    <label for="name">Name:</label><br> 
+    <input type="text" id="name" name="name" class="full" placeholder="Add a name/title for this toilet..."><br><br>
+    
+    <select name="borough" id="borough">
+        <option value="Bronx">Bronx</option>
+        <option value="Manhattan">Manhattan</option>
+        <option value="Brooklyn">Brooklyn</option>
+        <option value="Queens">Queens</option>
+        <option value="Staten Island">Staten Island</option>
+    </select>
+    
+    <input type="text" id="neighborhood" name="neighborhood" class="semi-full" placeholder="Neighborhood..."><br><br>
+    <label for="location">Specific Location:</label><br>
+    <input type="location" id="location" name="location" class="full" placeholder="Specific Location for this toilet..."><br><br>
+    <input type="checkbox" id="handicap" name="handicap" value="false">
+    <label for="handicap">Handicap Accessible?</label>
+    <input type="checkbox" id="year" name="year" value="false">
+    <label for="year">Open Year Round?</label><br><br>
+    <input type="submit" value="Submit">
+    `
+
+    
+    main.append(newToilet)
+    
+}
+
+
+
+
 
 // ANCHOR Helper Functions
 createNode = (type, content) => {
