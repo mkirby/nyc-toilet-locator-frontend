@@ -67,12 +67,12 @@ main {
   width: 20%;
   margin: 10px;
   padding: 20px;
-  cursor: pointer;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .toilet-card img {
   width: 100%;
+  cursor: pointer;
 }
 
 /* ANCHOR MAIN-SHOW ELEMENTS */
@@ -97,10 +97,11 @@ main {
   padding: 20px;
   margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  cursor: pointer;
+  
 }
-.back-to-results h3:hover {
+.clickable:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 #reviews-div {

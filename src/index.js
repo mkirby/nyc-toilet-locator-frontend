@@ -22,6 +22,18 @@ const getToiletById = id => {
     .then(r => r.json())
     .then(renderShowPage)  
 }
+const patchToilet = (id, body) => {
+    fetch(`http://localhost:3000/api/v1/toilets/${id}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+    .then(r => r.json())
+    .then(renderShowPage)
+}
 const searchToilets = query => {
     filterQuery = query
     fetch(`http://localhost:3000/api/v1/toilets?query=${query}&page=${page}`)
@@ -47,7 +59,7 @@ const postReview = (body) => {
     .then(r => r.json())
 }
 const deleteReview = (id) => {
-    return fetch(`http://localhost:3000/api/v1/reviews/${id}`, {
+    fetch(`http://localhost:3000/api/v1/reviews/${id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -55,8 +67,11 @@ const deleteReview = (id) => {
         }
     })
     .then(r => r.json())
+    .then(data => {
+        console.log(data)
+        getToiletById(data.toilet_id)
+    })
 }
-
 const postToilet = (body) => {
     fetch(`http://localhost:3000/api/v1/toilets`,{
         method: "POST",
@@ -69,7 +84,6 @@ const postToilet = (body) => {
     .then(r => r.json())
     .then(renderShowPage)
 }
-
 const getAddress = (latitude, longitude) => {
     fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
     .then(r => r.json())
@@ -85,9 +99,8 @@ const clickListeners = () => {
         //if user clicks "Restrooms Near Me" button
         if (e.target.matches("#filter-near-me button")) {
             geolocateUser(e)
-        } else if (e.target.matches(".toilet-card")) {
-            // TODO not accurate enough - if you click elements inside the container the link doesn't work
-            getToiletById(e.target.dataset.id)
+        } else if (e.target.matches(".toilet-show")) {
+            getToiletById(e.target.closest("div").dataset.id)
         } else if (e.target.matches("#home-link")) {
             searched = false
             page = 1
@@ -98,6 +111,8 @@ const clickListeners = () => {
             renderAdd()
         } else if (e.target.matches(".delete-button")) {
             removeReview(e)
+        } else if (e.target.matches(".fa-heart")) {
+            likeToilet(e)
         }
     })
 }
@@ -107,6 +122,8 @@ const submitListeners = () => {
         e.preventDefault()
         if (e.target.matches("#new-comment-form")) {
             createPost(e)
+        } else if (e.target.matches("#new-toilet")) {
+            createToilet(e)
         }
     })
 }
@@ -128,6 +145,12 @@ const changeListeners = () => {
 }
 
 // ANCHOR Event Handlers
+const likeToilet = e => {
+    const id = e.target.dataset.toiletId
+    const newlikes = parseInt(e.target.dataset.likes) + 1
+    const body = {likes: newlikes}
+    patchToilet(id, body)
+}
 
 const createToilet = e => {
     const configObj = {
@@ -202,9 +225,6 @@ const removeReview = (e) => {
     const reviewDiv = e.target.closest("div")
     const id = parseInt(reviewDiv.dataset.reviewId)
     deleteReview(id)
-    .then(() => {
-        reviewDiv.remove()
-    })
 }
 
 // ANCHOR Render Functions
@@ -246,6 +266,7 @@ const renderShowPage = (toiletObj) => {
     toiletDiv.id = "toilet-div"
     // contain the toilet card
     const divContainer = createNode("div", "selected-toilet")
+    divContainer.dataset.id = toiletObj.id
     //featured image
     const img = document.createElement("img")
     img.src = toiletObj.image
@@ -254,9 +275,10 @@ const renderShowPage = (toiletObj) => {
     const starRating = document.createElement("div")
     const avgStarRating = averageRating(toiletObj.reviews)
     starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
+
     const likes = document.createElement("h4")
     likes.innerHTML = `
-        <i class="fa fa-heart"></i> ${toiletObj.likes}
+        <i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}
     `
     //toilet details
     const name = createNode("h3", toiletObj.name)
@@ -271,7 +293,7 @@ const renderShowPage = (toiletObj) => {
     //append inner div to div container
 
     const backToResults = document.createElement("div")
-    backToResults.className = "back-to-results"
+    backToResults.className = "back-to-results clickable"
     const backTitle = createNode("h3", "Back to Results")
     backToResults.append(backTitle)
 
@@ -352,7 +374,9 @@ const renderIndexPage = (toiletArray) => {
         const divCard = createNode("div", "toilet-card")
         divCard.dataset.id = toiletObj.id
         const img = createNode("img", toiletObj.image)
+        img.className = "toilet-show"
         const name = createNode("h3", toiletObj.name)
+        name.className = "clickable toilet-show"
         const borough = createNode("p", toiletObj.borough)
         const neighborhood = createNode("p", toiletObj.neighborhood)
         const address = createNode("p", toiletObj.address)
@@ -395,7 +419,6 @@ const renderPageControls = (lastPage) => {
     }
     
 }
-
 
 function renderAdd() {
     clearElement(main)
