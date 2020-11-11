@@ -29,6 +29,7 @@
 
         <!-- FILTER ALL RESTROOMS -->
         <div id="filter-settings">
+            <!-- Filter by Borough -->
             <form id="filter-borough">
                 <label for="borough">Filter by Borough:</label><br>
                 <select name="borough" id="borough">
@@ -43,29 +44,18 @@
                     <input type="submit" value="Filter Results">
                 </div>
             </form><br>
+
+            <!-- Filter by Neighborhood -->
             <form id="filter-neighborhood">
                 <label for="neighborhood">Filter by Neighborhood:</label><br>
                 <select name="neighborhood" id="neighborhood">
-                    <!-- RENDER OPTIONS -->
+                    <!-- RENDER NEIGHBORHOOD OPTIONS -->
                 </select><br><br>
                 <div>
                     <input type="submit" value="Filter Results">
                 </div>
             </form>
-                
 
-
-                <!-- <div id="filter-options">
-                    <input type="checkbox" id="handicap-accessible" name="handicap-accessible">
-                    <label for="handicap-accessible">Handicap Accessible</label>
-                    <br>
-                    <input type="checkbox" id="year-round" name="year-round">
-                    <label for="year-round">Open Year Round</label>
-                </div>
-
-                <br> -->
-                
-            
         </div>
         
         <!-- should replace br with div padding -->
@@ -74,14 +64,14 @@
         <!-- SEARCH ALL RESTROOMS BY NAME -->
         <div id="search-by-name">
             <form action="" method="get">
-                <input type="text" id="name" name="name" placeholder="Search Restrooms"><br>
-                <!-- <input type="submit" value="Search"> -->
+                <input type="text" id="name" name="name" placeholder="Search Restrooms">
+                <input type="submit" value="Search">
             </form>
         </div>
         
         <br><br>
 
-        <!-- SHOVE LINKS AND COPYRIGHT TO B TTOM-->
+        <!-- SHOVE LINKS AND COPYRIGHT TO BOTTOM-->
         <footer>
             <h4>Link to Github</h4>
         </footer>
@@ -89,15 +79,11 @@
     </nav>
 
     <main id="main-content-div" class="main-index">
-        <!-- toggle class depending on js view render - either "main-index" or "main-show" -->    
         <!-- JS RENDER MAIN CONTENT -->
     </main>
 
     <div id="bottom-div">
-        <!-- JS RENDER ARROW CONTENT -->
-        <!-- <button id="back"><</button>
-        <p>Page #'s Here</p>
-        <button id="forward">></button> -->
+        <!-- JS RENDER PAGE CONTROLS -->
     </div>
 
 </body>

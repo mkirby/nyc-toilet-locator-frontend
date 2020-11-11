@@ -166,6 +166,12 @@ const removeReview = (e) => {
 const renderNeighborhoodsDropdown = (hoodArray) => {
     const dropdown = document.querySelector("#neighborhood")
     clearElement(dropdown)
+    const defaultOption = createNode("option", "Choose a Neighborhood")
+    defaultOption.setAttribute("value", ``)
+    defaultOption.setAttribute("disabled", "")
+    defaultOption.setAttribute("selected", "")
+    defaultOption.setAttribute("hidden", "")
+    dropdown.append(defaultOption)
     hoodArray.forEach(hood => {
         dropdown.append(createNode("option", hood))
     })
