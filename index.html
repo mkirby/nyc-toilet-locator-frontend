@@ -29,59 +29,42 @@
 
         <!-- FILTER ALL RESTROOMS -->
         <div id="filter-settings">
+            <!-- FILTER BY BOROUGH -->
             <form id="filter-borough">
                 <label for="borough">Filter by Borough:</label><br>
-                <select name="borough" id="borough">
-                    <option value="Bronx">Bronx</option>
-                    <option value="Manhattan">Manhattan</option>
-                    <option value="Brooklyn">Brooklyn</option>
-                    <option value="Queens">Queens</option>
-                    <option value="Staten Island">Staten Island</option>
+                <select name="borough" id="borough-dropdown">
+                    <!-- RENDER BOROUGH OPTIONS -->
                 </select>
-                <br><br>
+                <!-- <br><br>
                 <div>
                     <input type="submit" value="Filter Results">
-                </div>
+                </div> -->
             </form><br>
+
+            <!-- FILTER BY NEIGHBORHOOD -->
             <form id="filter-neighborhood">
                 <label for="neighborhood">Filter by Neighborhood:</label><br>
-                <select name="neighborhood" id="neighborhood">
-                    <!-- RENDER OPTIONS -->
-                </select><br><br>
+                <select name="neighborhood" id="neighborhood-dropdown">
+                    <!-- RENDER NEIGHBORHOOD OPTIONS -->
+                </select>
+                <!-- <br><br>
                 <div>
                     <input type="submit" value="Filter Results">
-                </div>
+                </div> -->
             </form>
-                
-
-
-                <!-- <div id="filter-options">
-                    <input type="checkbox" id="handicap-accessible" name="handicap-accessible">
-                    <label for="handicap-accessible">Handicap Accessible</label>
-                    <br>
-                    <input type="checkbox" id="year-round" name="year-round">
-                    <label for="year-round">Open Year Round</label>
-                </div>
-
-                <br> -->
-                
-            
-        </div>
-        
-        <!-- should replace br with div padding -->
-        <br><br>
+        </div><br>
 
         <!-- SEARCH ALL RESTROOMS BY NAME -->
         <div id="search-by-name">
             <form action="" method="get">
-                <input type="text" id="name" name="name" placeholder="Search Restrooms"><br>
-                <!-- <input type="submit" value="Search"> -->
+                <input type="text" id="name" name="name" placeholder="Search Restrooms">
+                <input type="submit" value="Search">
             </form>
         </div>
         
         <br><br>
 
-        <!-- SHOVE LINKS AND COPYRIGHT TO B TTOM-->
+        <!-- SHOVE LINKS AND COPYRIGHT TO BOTTOM-->
         <footer>
             <h4>Link to Github</h4>
         </footer>
@@ -89,15 +72,11 @@
     </nav>
 
     <main id="main-content-div" class="main-index">
-        <!-- toggle class depending on js view render - either "main-index" or "main-show" -->    
         <!-- JS RENDER MAIN CONTENT -->
     </main>
 
     <div id="bottom-div">
-        <!-- JS RENDER ARROW CONTENT -->
-        <!-- <button id="back"><</button>
-        <p>Page #'s Here</p>
-        <button id="forward">></button> -->
+        <!-- JS RENDER PAGE CONTROLS -->
     </div>
 
 </body>

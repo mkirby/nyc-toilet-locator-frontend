@@ -13,6 +13,7 @@ const getAllToilets = () => {
             console.log(data)
             renderIndexPage(data.toilets)
             renderPageControls(data.lastPage)
+            renderBoroughDropdown()
             renderNeighborhoodsDropdown(data.neighborhoods)
         })
 }
@@ -35,7 +36,7 @@ const searchToilets = query => {
     })
 }
 const postReview = (body) => {
-    fetch(`http://localhost:3000/api/v1/reviews`,{
+    return fetch(`http://localhost:3000/api/v1/reviews`,{
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -44,9 +45,16 @@ const postReview = (body) => {
         body: JSON.stringify(body)
     })
     .then(r => r.json())
-    .then(review => {
-        getToiletById(review.toilet_id)
+}
+const deleteReview = (id) => {
+    return fetch(`http://localhost:3000/api/v1/reviews/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     })
+    .then(r => r.json())
 }
 
 const postToilet = (body) => {
@@ -88,6 +96,8 @@ const clickListeners = () => {
             loadMainDivContent()
         } else if (e.target.matches("#add-entry")) {
             renderAdd()
+        } else if (e.target.matches(".delete-button")) {
+            removeReview(e)
         }
     })
 }
@@ -97,9 +107,15 @@ const submitListeners = () => {
         e.preventDefault()
         if (e.target.matches("#new-comment-form")) {
             createPost(e)
-        } else if (e.target.matches("#filter-borough")) {
+        }
+    })
+}
+
+const onFilterChangeListeners = () => {
+    document.addEventListener("change", e => {
+        if (e.target.matches("#borough-dropdown")) {
             filterByBorough(e)
-        } else if (e.target.matches("#filter-neighborhood")) {
+        } else if (e.target.matches("#neighborhood-dropdown")) {
             filterByNeighborhood(e)
         } else if (e.target.matches("#new-toilet")) {
             createToilet(e)
@@ -139,13 +155,13 @@ const createToilet = e => {
 const filterByBorough = e => {
     searched = true
     page = 1
-    searchToilets(e.target.borough.value)
+    searchToilets(e.target.value)
 }
 
 const filterByNeighborhood = e => {
     searched = true
     page = 1
-    searchToilets(e.target.neighborhood.value)
+    searchToilets(e.target.value)
 }
 
 const createPost = e => {
@@ -158,6 +174,9 @@ const createPost = e => {
         image: "https://www.atlantawatershed.org/wp-content/uploads/2017/06/default-placeholder.png"
     }
     postReview(review)
+    .then(review => {
+        getToiletById(review.toilet_id)
+    })
 }
 
 const geolocateUser = event => {
@@ -185,11 +204,40 @@ const geolocateUser = event => {
     }
 }
 
+const removeReview = (e) => {
+    const reviewDiv = e.target.closest("div")
+    const id = parseInt(reviewDiv.dataset.reviewId)
+    deleteReview(id)
+    .then(() => {
+        reviewDiv.remove()
+    })
+}
+
 // ANCHOR Render Functions
+const renderBoroughDropdown = () => {
+    const dropdown = document.querySelector("#borough-dropdown")
+    const boroughs = ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"].sort()
+    clearElement(dropdown)
+    const defaultOption = createNode("option", "Filter by Borough")
+    defaultOption.setAttribute("value", ``)
+    defaultOption.setAttribute("disabled", "")
+    defaultOption.setAttribute("selected", "")
+    defaultOption.setAttribute("hidden", "")
+    dropdown.append(defaultOption)
+    boroughs.forEach(ele => {
+        dropdown.append(createNode("option", ele))
+    })
+}
 
 const renderNeighborhoodsDropdown = (hoodArray) => {
-    const dropdown = document.querySelector("#neighborhood")
+    const dropdown = document.querySelector("#neighborhood-dropdown")
     clearElement(dropdown)
+    const defaultOption = createNode("option", "Filter by Neighborhood")
+    defaultOption.setAttribute("value", ``)
+    defaultOption.setAttribute("disabled", "")
+    defaultOption.setAttribute("selected", "")
+    defaultOption.setAttribute("hidden", "")
+    dropdown.append(defaultOption)
     hoodArray.forEach(hood => {
         dropdown.append(createNode("option", hood))
     })
@@ -395,10 +443,6 @@ function renderAdd() {
     
 }
 
-
-
-
-
 // ANCHOR Helper Functions
 const createNode = (type, content) => {
     let node = document.createElement(type);
@@ -439,7 +483,12 @@ const loadMainDivContent = () => {
     searched ? searchToilets(filterQuery) : getAllToilets()
 }
 
+const pageListeners = () => {
+    clickListeners()
+    submitListeners()
+    onFilterChangeListeners()
+}
+
 // ANCHOR Function Calls
 loadMainDivContent()
-clickListeners()
-submitListeners()
+pageListeners()
