@@ -111,24 +111,18 @@ const submitListeners = () => {
     })
 }
 
-const onFilterChangeListeners = () => {
-    document.addEventListener("change", e => {
-        if (e.target.matches("#borough-dropdown")) {
-            filterByBorough(e)
-        } else if (e.target.matches("#neighborhood-dropdown")) {
-            filterByNeighborhood(e)
-        } else if (e.target.matches("#new-toilet")) {
-            createToilet(e)
-        }
-    })
-}
-
 const changeListeners = () => {
     document.addEventListener("change", e => {
         if (e.target.matches("#handicap-check")) {
             e.target.value = !e.target.value
         } else if (e.target.matches("#year-check")) {
             e.target.value = !e.target.value
+        } else if (e.target.matches("#borough-dropdown")) {
+            filterByBorough(e)
+        } else if (e.target.matches("#neighborhood-dropdown")) {
+            filterByNeighborhood(e)
+        } else if (e.target.matches("#new-toilet")) {
+            createToilet(e)
         }
     })
 }
@@ -486,7 +480,7 @@ const loadMainDivContent = () => {
 const pageListeners = () => {
     clickListeners()
     submitListeners()
-    onFilterChangeListeners()
+    changeListeners()
 }
 
 // ANCHOR Function Calls
