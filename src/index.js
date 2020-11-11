@@ -89,6 +89,9 @@ const clickListeners = () => {
 const submitListeners = () => {
     document.addEventListener("submit", e =>{
         e.preventDefault()
+        if (e.target.matches("#new-comment-form")) {
+            createPost(e)
+        }
     })
 }
 
