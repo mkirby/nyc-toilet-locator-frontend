@@ -48,6 +48,16 @@ const postReview = (body) => {
         getToiletById(review.toilet_id)
     })
 }
+const deleteReview = (id) => {
+    return fetch(`http://localhost:3000/api/v1/reviews/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    })
+    .then(r => r.json())
+}
 const getAddress = (latitude, longitude) => {
     fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
     .then(r => r.json())
@@ -72,6 +82,8 @@ const clickListeners = () => {
             getAllToilets()
         } else if (e.target.matches(".back-to-results h3")) {
             loadMainDivContent()
+        } else if (e.target.matches(".delete-button")) {
+            removeReview(e)
         }
     })
 }
@@ -138,6 +150,15 @@ const geolocateUser = event => {
         // TODO user has location data turned off run this:
         // ipLookUp()
     }
+}
+
+const removeReview = (e) => {
+    const reviewDiv = e.target.closest("div")
+    const id = parseInt(reviewDiv.dataset.reviewId)
+    deleteReview(id)
+    .then(() => {
+        reviewDiv.remove()
+    })
 }
 
 // ANCHOR Render Functions
@@ -342,6 +363,7 @@ const averageRating = toiletReviews => {
 
 // ANCHOR Initial Render
 const loadMainDivContent = () => {
+    console.log("rendered")
     searched ? searchToilets(filterQuery) : getAllToilets()
 }
 
