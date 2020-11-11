@@ -35,7 +35,7 @@ const searchToilets = query => {
     })
 }
 const postReview = (body) => {
-    fetch(`http://localhost:3000/api/v1/reviews`,{
+    return fetch(`http://localhost:3000/api/v1/reviews`,{
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -44,9 +44,6 @@ const postReview = (body) => {
         body: JSON.stringify(body)
     })
     .then(r => r.json())
-    .then(review => {
-        getToiletById(review.toilet_id)
-    })
 }
 const deleteReview = (id) => {
     return fetch(`http://localhost:3000/api/v1/reviews/${id}`, {
@@ -125,6 +122,9 @@ const createPost = e => {
         image: "https://www.atlantawatershed.org/wp-content/uploads/2017/06/default-placeholder.png"
     }
     postReview(review)
+    .then(review => {
+        getToiletById(review.toilet_id)
+    })
 }
 
 const geolocateUser = event => {
