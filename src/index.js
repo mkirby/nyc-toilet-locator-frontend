@@ -105,6 +105,10 @@ const clickListeners = () => {
             searched = false
             page = 1
             getAllToilets()
+        } else if (e.target.matches(".home-img")) {
+            searched = false
+            page = 1
+            getAllToilets()
         } else if (e.target.matches(".back-to-results h3")) {
             loadMainDivContent()
         } else if (e.target.matches("#add-entry")) {
@@ -509,3 +513,4 @@ const pageListeners = () => {
 // ANCHOR Function Calls
 loadMainDivContent()
 pageListeners()
+
