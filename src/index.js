@@ -275,8 +275,14 @@ const renderShowPage = (toiletObj) => {
     const img = document.createElement("img")
     img.src = toiletObj.image
     img.alt = toiletObj.name
+    
     //toilet details
-    const name = createNode("h3", toiletObj.name)
+    let name = document.createElement("h3")
+    if (toiletObj.handicap_accessible){
+        name.innerHTML = `${toiletObj.name} <span class="accent-color"><i class="fab fa-accessible-icon"></i><s/pan>`
+    } else {
+        name.innerHTML = toiletObj.name
+    }
     const address = createNode("p", `<b>Address:</b><br>${toiletObj.address}`)
     const borough = createNode("p", `<b>Borough:</b><br>${toiletObj.borough}`)
     const neighborhood = createNode("p", `<b>Neighborhood:</b><br>${toiletObj.neighborhood}`)
@@ -316,7 +322,7 @@ const renderSocialIcons = toiletObj => {
     //likes count and heart
     const likesDiv = document.createElement("div")
     likesDiv.id = "likes-count-div"
-    likesDiv.innerHTML = `<i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}`
+    likesDiv.innerHTML = `<i class="fa fa-heart alt-accent-color" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}`
     //add likes and stars to social div
     socialDiv.append(likesDiv, starRating)
     return socialDiv

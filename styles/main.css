@@ -10,6 +10,19 @@ body {
   margin: 0;
 }
 
+.accent-color {
+  color: #377fbe;
+}
+
+.alt-accent-color {
+  /* color: red; */
+  color: #e92247;
+}
+
+.checked {
+  color: gold;
+}
+
 /* ANCHOR NAVIGATION */
 nav {
   grid-area: nav;
@@ -18,7 +31,6 @@ nav {
   height: 100%;
   width: 200px;
   padding: 40px;
-
   position: relative;
 }
 
@@ -69,7 +81,7 @@ main {
   /* grid-area: main; */
   /* display: flex; */
   /* flex-flow: row wrap; */
-  justify-content: space-around;
+  /* justify-content: space-around; */
 }
 
 .main-show {
@@ -195,9 +207,7 @@ main {
   cursor: pointer;
 }
 
-.checked {
-  color: gold;
-}
+
 
 #new-toilet {
   background-color: white;
