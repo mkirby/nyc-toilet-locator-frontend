@@ -11,7 +11,8 @@ const getAllToilets = () => {
         .then(r => r.json())
         .then(data => {
             console.log(data)
-            renderIndexPage(data.toilets)
+            // renderIndexPage(data.toilets)
+            renderIndexPage(data.toilets, data.reviews3)   
             renderPageControls(data.lastPage)
             renderBoroughDropdown()
             renderNeighborhoodsDropdown(data.neighborhoods)
@@ -40,7 +41,8 @@ const searchToilets = query => {
     .then(r => r.json())
     .then(data => {
         console.log(data)
-        renderIndexPage(data.toilets)
+        // renderIndexPage(data.toilets)
+        renderIndexPage(data.toilets, data.reviews3)
         renderPageControls(data.lastPage)
         if (query == "Manhattan" ||query == "Brooklyn"||query == "Queens"||query == "Bronx"||query == "Staten Island") {
             renderNeighborhoodsDropdown(data.neighborhoods)
@@ -320,6 +322,26 @@ const renderSocialIcons = toiletObj => {
     return socialDiv
 }
 
+const renderIndexSociaIcons = (toiletObj, reviewsArray) => {
+    // social icons container to return
+    const socialDiv = document.createElement("div")
+    socialDiv.id = "social-icons-div"
+    //star rating icons
+    const starRating = document.createElement("div")
+    starRating.id = "star-rating-div"
+    const avgStarRating = averageRating(reviewsArray)
+    starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
+    //likes count and heart
+    const likesDiv = document.createElement("div")
+    likesDiv.id = "likes-count-div"
+    likesDiv.innerHTML = `
+        <i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}
+    `
+    //add likes and stars to social div
+    socialDiv.append(likesDiv, starRating)
+    return socialDiv
+}
+
 const renderStarRating = (checked, unchecked) => {
     let htmlChunk = ''
     for (let i=checked; i>0; i--) { htmlChunk += `<i class="fa fa-star checked"></i>`}
@@ -385,23 +407,24 @@ const renderOneReview = reviewObj => {
     return div
 }
 
-const renderIndexPage = (toiletArray) => {
+const renderIndexPage = (toiletArray, reviewArray) => {
     clearElement(main)
     main.className = "main-index"
-    toiletArray.forEach(toiletObj => {
+    for (let i = 0; i < reviewArray.length; i++) {
         const divCard = createNode("div", "toilet-card")
-        divCard.dataset.id = toiletObj.id
-        const img = createNode("img", toiletObj.image)
+        divCard.dataset.id = toiletArray[i].id
+        const img = createNode("img", toiletArray[i].image)
         img.className = "toilet-show"
-        const name = createNode("h3", toiletObj.name)
+        const name = createNode("h3", toiletArray[i].name)
         name.className = "clickable toilet-show"
-        const borough = createNode("p", toiletObj.borough)
-        const neighborhood = createNode("p", toiletObj.neighborhood)
-        const address = createNode("p", toiletObj.address)
-        const location = createNode("p", toiletObj.location)
-        divCard.append(img, name, borough, neighborhood, address, location)
+        const borough = createNode("p", toiletArray[i].borough)
+        const neighborhood = createNode("p", toiletArray[i].neighborhood)
+        const address = createNode("p", toiletArray[i].address)
+        const location = createNode("p", toiletArray[i].location)
+        const socialIcons = renderIndexSociaIcons(toiletArray[i], reviewArray[i])
+        divCard.append(img, name, borough, neighborhood, address, location, socialIcons)
         main.append(divCard)
-    })
+    }
 }
 
 const renderPageControls = (lastPage) => {

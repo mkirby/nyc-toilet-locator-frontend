@@ -102,13 +102,13 @@ main {
 
 #likes-count-div {
   grid-area: like;
-  /* border: 2px solid orange; */
+  border: 2px solid orange;
 }
 
 #star-rating-div {
   grid-area: stars;
   text-align: right;
-  /* border: 2px solid orange; */
+  border: 2px solid orange;
 }
 
 .back-to-results {
