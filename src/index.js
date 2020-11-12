@@ -11,8 +11,7 @@ const getAllToilets = () => {
         .then(r => r.json())
         .then(data => {
             console.log(data)
-            // renderIndexPage(data.toilets)
-            renderIndexPage(data.toilets, data.reviews3)   
+            renderIndexPage(data.toilets)
             renderPageControls(data.lastPage)
             renderBoroughDropdown()
             renderNeighborhoodsDropdown(data.neighborhoods)
@@ -41,8 +40,7 @@ const searchToilets = query => {
     .then(r => r.json())
     .then(data => {
         console.log(data)
-        // renderIndexPage(data.toilets)
-        renderIndexPage(data.toilets, data.reviews3)
+        renderIndexPage(data.toilets)
         renderPageControls(data.lastPage)
         if (query == "Manhattan" ||query == "Brooklyn"||query == "Queens"||query == "Bronx"||query == "Staten Island") {
             renderNeighborhoodsDropdown(data.neighborhoods)
@@ -318,29 +316,7 @@ const renderSocialIcons = toiletObj => {
     //likes count and heart
     const likesDiv = document.createElement("div")
     likesDiv.id = "likes-count-div"
-    likesDiv.innerHTML = `
-        <i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}
-    `
-    //add likes and stars to social div
-    socialDiv.append(likesDiv, starRating)
-    return socialDiv
-}
-
-const renderIndexSociaIcons = (toiletObj, reviewsArray) => {
-    // social icons container to return
-    const socialDiv = document.createElement("div")
-    socialDiv.id = "social-icons-div"
-    //star rating icons
-    const starRating = document.createElement("div")
-    starRating.id = "star-rating-div"
-    const avgStarRating = averageRating(reviewsArray)
-    starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
-    //likes count and heart
-    const likesDiv = document.createElement("div")
-    likesDiv.id = "likes-count-div"
-    likesDiv.innerHTML = `
-        <i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}
-    `
+    likesDiv.innerHTML = `<i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}`
     //add likes and stars to social div
     socialDiv.append(likesDiv, starRating)
     return socialDiv
@@ -411,24 +387,24 @@ const renderOneReview = reviewObj => {
     return div
 }
 
-const renderIndexPage = (toiletArray, reviewArray) => {
+const renderIndexPage = (toiletObj) => {
     clearElement(main)
     main.className = "main-index"
-    for (let i = 0; i < reviewArray.length; i++) {
+    toiletObj.forEach(toilet => {
         const divCard = createNode("div", "toilet-card")
-        divCard.dataset.id = toiletArray[i].id
-        const img = createNode("img", toiletArray[i].image)
+        divCard.dataset.id = toilet.id
+        const img = createNode("img", toilet.image)
         img.className = "toilet-show"
-        const name = createNode("h3", toiletArray[i].name)
+        const name = createNode("h3", toilet.name)
         name.className = "clickable toilet-show"
-        const borough = createNode("p", `<b>Borough:</b><br>${toiletArray[i].borough}`)
-        const neighborhood = createNode("p", `<b>Neighborhood:</b><br>${toiletArray[i].neighborhood}`)
-        const address = createNode("p", `<b>Address:</b><br>${toiletArray[i].address}`)
-        const location = createNode("p", `<b>Specific Location:</b><br>${toiletArray[i].location}`)
-        const socialIcons = renderIndexSociaIcons(toiletArray[i], reviewArray[i])
+        const borough = createNode("p", `<b>Borough:</b><br>${toilet.borough}`)
+        const neighborhood = createNode("p", `<b>Neighborhood:</b><br>${toilet.neighborhood}`)
+        const address = createNode("p", `<b>Address:</b><br>${toilet.address}`)
+        const location = createNode("p", `<b>Specific Location:</b><br>${toilet.location}`)
+        const socialIcons = renderSocialIcons(toilet)
         divCard.append(img, name, borough, neighborhood, address, location, socialIcons)
         main.append(divCard)
-    }
+    })
 }
 
 const renderPageControls = (lastPage) => {
@@ -469,7 +445,6 @@ function renderAddToilet() {
     clearElement(main)
     clearElement(pageControls)
     main.className = "main-add"
-
     const newToilet = document.createElement("form")
     newToilet.id = "new-toilet"
     newToilet.innerHTML = `
@@ -500,12 +475,9 @@ function renderAddToilet() {
     `
     pageControls.innerHTML = `
     <div class="back-to-results clickable">
-        
         <h3><i class="fas fa-arrow-alt-circle-left"></i> Back to Results</h3>
     </div>`
-    
     main.append(newToilet)
-    
 }
 
 // ANCHOR Helper Functions
@@ -560,4 +532,3 @@ const pageListeners = () => {
 // ANCHOR Function Calls
 loadMainDivContent()
 pageListeners()
-
