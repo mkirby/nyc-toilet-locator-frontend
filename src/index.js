@@ -383,7 +383,7 @@ const renderOneReview = reviewObj => {
     const deleteButton = createNode("button", "X")
     deleteButton.className = "delete-button"
     // create the review data
-    const title = createNode("h5", `${reviewObj.name} on ${reviewObj.date}`)
+    const title = createNode("h4", `${reviewObj.name} on ${reviewObj.date}`)
     const starRating = document.createElement("div")
     starRating.innerHTML = renderStarRating(reviewObj.rating, 5 - reviewObj.rating)
     const content = createNode("p", `\'${reviewObj.content}\'`)
