@@ -1,7 +1,7 @@
 body {
   background-color: #FFF8E7;
   display: grid;
-  grid-template-columns: 1fr auto;
+  /* grid-template-columns: 1fr auto; */
   /* grid-template-rows: 0.4fr 2.2fr 0.2fr; */
   gap: 0px 0px;
   grid-template-areas:
@@ -13,8 +13,8 @@ body {
 /* ANCHOR NAVIGATION */
 nav {
   grid-area: nav;
-  border: 2px solid black;
-  /* background-color: lightblue; */
+  /* border: 2px solid black; */
+  background-color: #377fbe;
   height: 100%;
   width: 200px;
   padding: 40px;
@@ -28,8 +28,9 @@ nav .home-img {
   cursor: pointer
 }
 
-#menu-links p {
+#menu-links h3:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 nav footer {
@@ -40,7 +41,7 @@ nav footer {
 /* ANCHOR MAIN CONTENT ELEMENT */
 
 main {
-  border: 2px solid green;
+  /* border: 2px solid green; */
   padding: 40px;
 }
 
@@ -49,7 +50,7 @@ main {
 #bottom-div {
   text-align: center;
   grid-area: bottom;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .page-controls {
@@ -64,6 +65,13 @@ main {
   justify-content: space-around;
 }
 
+.main-add {
+  /* grid-area: main; */
+  /* display: flex; */
+  /* flex-flow: row wrap; */
+  justify-content: space-around;
+}
+
 .main-show {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -75,12 +83,13 @@ main {
 /* ANCHOR MAIN-INDEX ELEMENTS */
 
 .toilet-card {
-  border: 2px solid orange;
-  background-color: orange;
+  /* border: 2px solid orange; */
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   width: 20%;
   margin: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+ 
 }
 
 .toilet-card img {
@@ -115,20 +124,20 @@ main {
 
 #likes-count-div {
   grid-area: like;
-  border: 2px solid orange;
+  /* border: 2px solid orange; */
 }
 
 #star-rating-div {
   grid-area: stars;
   text-align: right;
-  border: 2px solid orange;
+  /* border: 2px solid orange; */
 }
 
 .back-to-results {
   background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 20px;
   margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
 }
 
@@ -140,6 +149,7 @@ main {
 #reviews-div {
   grid-area: comment;
   display: grid;
+  grid-template-rows: minmax(0, 0.1fr), minmax(0, 0.9fr);
   /* grid-template-columns: minmax(0, 1fr); */
   gap: 0px 0px;
   grid-template-areas:
@@ -151,12 +161,21 @@ main {
 
 .add-review-div {
   grid-area: add;
+  /* height: 260px; */
   padding: 0 20px 20px 20px;
   margin: 10px;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* border: 2px solid black; */
 }
 
+.add-review-div textarea {
+  width: 100%; 
+  margin: 0px; 
+  height: 113px;
+  /* border: 2px solid black; */
+
+}
 .rendered-reviews {
   grid-area: reviews;
 }
@@ -183,9 +202,9 @@ main {
 #new-toilet {
   background-color: white;
   padding: 30px;
-  margin: 30px 80px;
+  margin: 30px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  /* border: 2px solid orange; */
+  /* border: px solid orange; */
 }
 
 #new-toilet .full {

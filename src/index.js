@@ -279,12 +279,12 @@ const renderShowPage = (toiletObj) => {
     img.alt = toiletObj.name
     //toilet details
     const name = createNode("h3", toiletObj.name)
-    const address = createNode("p", `Address:\n${toiletObj.address}`)
-    const borough = createNode("p", `Borough:\n${toiletObj.borough}`)
-    const neighborhood = createNode("p", `Neighborhood:\n${toiletObj.neighborhood}`)
-    const location = createNode("p", `Cross Streets:\n${toiletObj.location}`)
-    const handicap_accessible = createNode("p", `Handicap Accessible:\n${toiletObj.handicap_accessible}`)
-    const open_year_round = createNode("p", `Open Year Round:\n${toiletObj.open_year_round}`)
+    const address = createNode("p", `<b>Address:</b><br>${toiletObj.address}`)
+    const borough = createNode("p", `<b>Borough:</b><br>${toiletObj.borough}`)
+    const neighborhood = createNode("p", `<b>Neighborhood:</b><br>${toiletObj.neighborhood}`)
+    const location = createNode("p", `<b>Cross Streets:</b><br>${toiletObj.location}`)
+    const handicap_accessible = createNode("p", `<b>Handicap Accessible:</b><br>${toiletObj.handicap_accessible}`)
+    const open_year_round = createNode("p", `<b>Open Year Round:</b><br>${toiletObj.open_year_round}`)
     //social icons
     const socialDiv = renderSocialIcons(toiletObj)
     //append inner items to inner div container
@@ -421,10 +421,10 @@ const renderIndexPage = (toiletArray, reviewArray) => {
         img.className = "toilet-show"
         const name = createNode("h3", toiletArray[i].name)
         name.className = "clickable toilet-show"
-        const borough = createNode("p", toiletArray[i].borough)
-        const neighborhood = createNode("p", toiletArray[i].neighborhood)
-        const address = createNode("p", toiletArray[i].address)
-        const location = createNode("p", toiletArray[i].location)
+        const borough = createNode("p", `<b>Borough:</b><br>${toiletArray[i].borough}`)
+        const neighborhood = createNode("p", `<b>Neighborhood:</b><br>${toiletArray[i].neighborhood}`)
+        const address = createNode("p", `<b>Address:</b><br>${toiletArray[i].address}`)
+        const location = createNode("p", `<b>Specific Location:</b><br>${toiletArray[i].location}`)
         const socialIcons = renderIndexSociaIcons(toiletArray[i], reviewArray[i])
         divCard.append(img, name, borough, neighborhood, address, location, socialIcons)
         main.append(divCard)
@@ -473,7 +473,7 @@ function renderAddToilet() {
     const newToilet = document.createElement("form")
     newToilet.id = "new-toilet"
     newToilet.innerHTML = `
-    <h2>Add New NYC Public Toilet</h4>
+    <h2>Add New NYC Public Toilet</h2>
     <label for="name">Name:</label><br> 
     <input type="text" id="name" name="name" class="full" placeholder="Add a name/title for this toilet..."><br><br>
     
@@ -514,6 +514,9 @@ const createNode = (type, content) => {
     switch (type) {
         case "div":
             node.className = content;
+            break
+        case "p":
+            node.innerHTML = content;
             break
         case "img":
             node.src = content;
