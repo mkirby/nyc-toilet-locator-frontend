@@ -104,11 +104,11 @@ const clickListeners = () => {
         } else if (e.target.matches("#home-link")) {
             searched = false
             page = 1
-            getAllToilets()
+            loadMainDivContent()
         } else if (e.target.matches(".back-to-results h3")) {
             loadMainDivContent()
         } else if (e.target.matches("#add-entry")) {
-            renderAdd()
+            renderAddToilet()
         } else if (e.target.matches(".delete-button")) {
             removeReview(e)
         } else if (e.target.matches(".fa-heart")) {
@@ -293,8 +293,12 @@ const renderShowPage = (toiletObj) => {
     //append inner div to div container
 
     const backToResults = document.createElement("div")
-    backToResults.className = "back-to-results clickable"
-    const backTitle = createNode("h3", "Back to Results")
+    backToResults.className = "back-to-results"
+    const backTitle = document.createElement("h3")
+    backTitle.className = "clickable"
+    backTitle.innerHTML = `
+        <i class="fas fa-arrow-alt-circle-left"></i> Back to Results
+    `
     backToResults.append(backTitle)
 
     toiletDiv.append(divContainer, backToResults)
@@ -304,8 +308,8 @@ const renderShowPage = (toiletObj) => {
 }
 const renderStarRating = (checked, unchecked) => {
     let htmlChunk = ''
-    for (let i=checked; i>0; i--) { htmlChunk += `<span class="fa fa-star checked"></span>`}
-    for (let i=unchecked; i>0; i--) { htmlChunk += `<span class="fa fa-star"></span>`}
+    for (let i=checked; i>0; i--) { htmlChunk += `<i class="fa fa-star checked"></i>`}
+    for (let i=unchecked; i>0; i--) { htmlChunk += `<i class="fa fa-star"></i>`}
     return htmlChunk
 }
 
@@ -420,7 +424,7 @@ const renderPageControls = (lastPage) => {
     
 }
 
-function renderAdd() {
+function renderAddToilet() {
     clearElement(main)
     clearElement(pageControls)
     main.className = "main-add"
@@ -454,7 +458,10 @@ function renderAdd() {
     <input type="submit" value="Submit">
     `
     pageControls.innerHTML = `
-    <div class="back-to-results"><h3>Back to Results</h3></div>`
+    <div class="back-to-results clickable">
+        
+        <h3><i class="fas fa-arrow-alt-circle-left"></i> Back to Results</h3>
+    </div>`
     
     main.append(newToilet)
     
