@@ -271,15 +271,6 @@ const renderShowPage = (toiletObj) => {
     const img = document.createElement("img")
     img.src = toiletObj.image
     img.alt = toiletObj.name
-    //likes and rating
-    const starRating = document.createElement("div")
-    const avgStarRating = averageRating(toiletObj.reviews)
-    starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
-
-    const likes = document.createElement("h4")
-    likes.innerHTML = `
-        <i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}
-    `
     //toilet details
     const name = createNode("h3", toiletObj.name)
     const address = createNode("p", `Address:\n${toiletObj.address}`)
@@ -288,8 +279,10 @@ const renderShowPage = (toiletObj) => {
     const location = createNode("p", `Cross Streets:\n${toiletObj.location}`)
     const handicap_accessible = createNode("p", `Handicap Accessible:\n${toiletObj.handicap_accessible}`)
     const open_year_round = createNode("p", `Open Year Round:\n${toiletObj.open_year_round}`)
+    //social icons
+    const socialDiv = renderSocialIcons(toiletObj)
     //append inner items to inner div container
-    divContainer.append(img, name, starRating, likes, address, borough, neighborhood, location, handicap_accessible, open_year_round)
+    divContainer.append(img, name, address, borough, neighborhood, location, handicap_accessible, open_year_round, socialDiv)
     //append inner div to div container
 
     const backToResults = document.createElement("div")
@@ -306,6 +299,27 @@ const renderShowPage = (toiletObj) => {
     //render the reviews half of the page
     renderReviews(toiletObj)
 }
+
+const renderSocialIcons = toiletObj => {
+    // social icons container to return
+    const socialDiv = document.createElement("div")
+    socialDiv.id = "social-icons-div"
+    //star rating icons
+    const starRating = document.createElement("div")
+    starRating.id = "star-rating-div"
+    const avgStarRating = averageRating(toiletObj.reviews)
+    starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
+    //likes count and heart
+    const likesDiv = document.createElement("div")
+    likesDiv.id = "likes-count-div"
+    likesDiv.innerHTML = `
+        <i class="fa fa-heart" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}
+    `
+    //add likes and stars to social div
+    socialDiv.append(likesDiv, starRating)
+    return socialDiv
+}
+
 const renderStarRating = (checked, unchecked) => {
     let htmlChunk = ''
     for (let i=checked; i>0; i--) { htmlChunk += `<i class="fa fa-star checked"></i>`}

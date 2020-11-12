@@ -92,6 +92,25 @@ main {
   width: 100%;
 }
 
+#social-icons-div {
+  display: grid;
+  grid-template-columns: minmax(0, .3fr) minmax(0, .7fr);
+  gap: 0px 0px;
+  grid-template-areas:
+    "like stars";
+}
+
+#likes-count-div {
+  grid-area: like;
+  /* border: 2px solid orange; */
+}
+
+#star-rating-div {
+  grid-area: stars;
+  text-align: right;
+  /* border: 2px solid orange; */
+}
+
 .back-to-results {
   background-color: white;
   padding: 20px;
