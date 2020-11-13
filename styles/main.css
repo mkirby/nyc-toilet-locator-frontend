@@ -73,8 +73,9 @@ main {
 /* ANCHOR BOTTOM DIVIDER */
 
 #bottom-div {
-  text-align: center;
   grid-area: bottom;
+  text-align: center;
+  border: 2px solid blue
 }
 
 .page-controls {
@@ -106,11 +107,35 @@ main {
   margin: 10px;
   padding: 20px;
   min-width: 250px;
+  display: grid;
+  grid-template-rows: 0fr 1fr 0fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "image"
+    "details"
+    "social"
+    ;
+  position: relative;
 }
 
-.toilet-card img {
+#toilet-card-image img {
   width: 100%;
+  height: 100%;
   cursor: pointer;
+  object-fit: contain;
+}
+
+#toilet-card-image {
+  grid-area: image;
+  height: 200px;
+}
+
+#toilet-card-details {
+  grid-area: details;
+}
+
+#toilet-card-social {
+  grid-area: social;
 }
 
 /* ANCHOR MAIN-SHOW ELEMENTS */

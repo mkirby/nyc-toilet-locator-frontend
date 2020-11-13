@@ -20,10 +20,10 @@ const getAllToilets = () => {
 const getToiletById = id => {
     fetch(`http://localhost:3000/api/v1/toilets/${id}`)
     .then(r => r.json())
-    .then(renderShowPage)  
+    .then(renderShowPage)
 }
 const patchToilet = (id, body) => {
-    fetch(`http://localhost:3000/api/v1/toilets/${id}`,{
+    return fetch(`http://localhost:3000/api/v1/toilets/${id}`,{
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -32,7 +32,6 @@ const patchToilet = (id, body) => {
         body: JSON.stringify(body)
     })
     .then(r => r.json())
-    .then(renderShowPage)
 }
 const searchToilets = query => {
     filterQuery = query
@@ -100,7 +99,7 @@ const clickListeners = () => {
         if (e.target.matches("#filter-near-me button")) {
             geolocateUser(e)
         } else if (e.target.matches(".toilet-show")) {
-            getToiletById(e.target.closest("div").dataset.id)
+            getToiletById(e.target.closest(".toilet-card").dataset.id)
         } else if (e.target.matches("#home-link")) {
             searched = false
             page = 1
@@ -154,6 +153,7 @@ const likeToilet = e => {
     const newlikes = parseInt(e.target.dataset.likes) + 1
     const body = {likes: newlikes}
     patchToilet(id, body)
+    .then(renderShowPage)
 }
 
 const createToilet = e => {
@@ -402,8 +402,15 @@ const renderIndexPage = (toiletObj) => {
     toiletObj.forEach(toilet => {
         const divCard = createNode("div", "toilet-card")
         divCard.dataset.id = toilet.id
+        // image div
+        const imgDiv = document.createElement("div")
+        imgDiv.id = "toilet-card-image"
         const img = createNode("img", toilet.image)
         img.className = "toilet-show"
+        imgDiv.append(img)
+        // details div
+        const detailsDiv = document.createElement("div")
+        detailsDiv.id = "toilet-card-details"
         let name = document.createElement("h3")
         if (toilet.handicap_accessible){
             name.innerHTML = `${toilet.name}   <i class="fab fa-accessible-icon accent-color"></i>`
@@ -415,8 +422,14 @@ const renderIndexPage = (toiletObj) => {
         const neighborhood = createNode("p", `<b>Neighborhood:</b><br>${toilet.neighborhood}`)
         const address = createNode("p", `<b>Address:</b><br>${toilet.address}`)
         const location = createNode("p", `<b>Specific Location:</b><br>${toilet.location}`)
+        detailsDiv.append(name, borough, neighborhood, address, location)
+        //social div
+        const socialDiv = document.createElement("div")
+        socialDiv.id = "toilet-card-social"
         const socialIcons = renderSocialIcons(toilet)
-        divCard.append(img, name, borough, neighborhood, address, location, socialIcons)
+        socialDiv.append(socialIcons)
+        //append divs to card
+        divCard.append(imgDiv, detailsDiv, socialDiv)
         main.append(divCard)
     })
 }
@@ -550,6 +563,5 @@ const pageListeners = () => {
 }
 
 // ANCHOR Function Calls
-// loadMainDivContent()
-getToiletById(7)
+loadMainDivContent()
 pageListeners()
