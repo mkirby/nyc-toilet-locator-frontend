@@ -504,13 +504,14 @@ function renderAddToilet() {
     clearElement(main)
     clearElement(pageControls)
     main.className = "main-add"
+    const newToiletFormDiv = document.createElement("div")
+    newToiletFormDiv.id = "new-toilet-form-div"
     const newToilet = document.createElement("form")
     newToilet.id = "new-toilet"
     newToilet.innerHTML = `
     <h2>Add New NYC Public Toilet</h2>
     <label for="name">Name:</label><br> 
     <input type="text" id="name" name="name" class="full" placeholder="Add a name/title for this toilet..."><br><br>
-    
     <select name="borough" id="borough">
         <option value="Bronx">Bronx</option>
         <option value="Manhattan">Manhattan</option>
@@ -518,7 +519,6 @@ function renderAddToilet() {
         <option value="Queens">Queens</option>
         <option value="Staten Island">Staten Island</option>
     </select>
-    
     <input type="text" id="neighborhood" name="neighborhood" class="semi-full" placeholder="Neighborhood..."><br><br>
     <label for="address">Address:</label><br>
     <input type="text" id="address" name="address" class="full" placeholder="Full Address..."><br><br>
@@ -532,11 +532,14 @@ function renderAddToilet() {
     <label for="year">Open Year Round?</label><br><br>
     <input type="submit" value="Submit">
     `
-    pageControls.innerHTML = `
-    <div class="back-to-results clickable">
-        <h2><i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results</h2>
-    </div>`
-    main.append(newToilet)
+    const backToResults = document.createElement("div")
+    backToResults.innerHTML = `
+        <div class="back-to-results">
+            <h2 class="clickable"><i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results</h2>
+        </div>
+    `
+    newToiletFormDiv.append(newToilet, backToResults)
+    main.append(newToiletFormDiv)
 }
 
 // ANCHOR Helper Functions
@@ -591,5 +594,6 @@ const pageListeners = () => {
 }
 
 // ANCHOR Function Calls
-loadMainDivContent()
+// loadMainDivContent()
 pageListeners()
+renderAddToilet()
