@@ -242,7 +242,14 @@ main {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.add-review-div form input[type="text"], select, textarea {
+.add-review-div form input[type="text"], textarea {
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-review-div form select {
   background-color: #f8f8f8;
   box-sizing: border-box;
   border: 2px solid #ccc;
@@ -286,10 +293,11 @@ main {
   cursor: pointer;
 }
 
+/* ANCHOR MAIN-ADD ELEMENTS */
+
 #new-toilet-form-div {
   width: 50%;
   margin: 10px;
-  border: 2px solid orange;
 }
 
 /* this is the form */
@@ -298,7 +306,31 @@ main {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 20px;
   margin: 10px;
-  border: 2px solid red;
+  min-width: 400px
+}
+
+#new-toilet input {
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+#new-toilet select {
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+#new-toilet input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.back-min-width {
+  min-width: 400px
 }
 
 #new-toilet .full {

@@ -534,7 +534,7 @@ function renderAddToilet() {
     `
     const backToResults = document.createElement("div")
     backToResults.innerHTML = `
-        <div class="back-to-results">
+        <div class="back-to-results back-min-width">
             <h2 class="clickable"><i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results</h2>
         </div>
     `
