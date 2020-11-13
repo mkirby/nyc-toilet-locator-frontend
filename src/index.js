@@ -109,7 +109,7 @@ const clickListeners = () => {
             searched = false
             page = 1
             getAllToilets()
-        } else if (e.target.matches(".back-to-results h3")) {
+        } else if (e.target.matches(".back-to-results h2")) {
             loadMainDivContent()
         } else if (e.target.matches("#add-entry")) {
             renderAddToilet()
