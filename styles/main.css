@@ -28,10 +28,36 @@ nav {
   background-color: #377fbe;
   height: 100%;
   width: 250px;
-  padding: 20px;
-  position: relative;
-  /* position: fixed;
-  top: 0; */
+  padding: 20px 20px 100px 20px;
+  /* position: absolute; */
+  position: fixed;
+  top: 0;
+  display: grid;
+  grid-template-rows: 0fr 0fr 1fr 0fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "header"
+    "links"
+    "filters"
+    "footer"
+    ;
+}
+
+#nav-menu-header {
+  grid-area: header;
+}
+
+#nav-menu-links {
+  grid-area: links;
+}
+
+#nav-menu-filters {
+  grid-area: filters;
+}
+
+#nav-menu-footer {
+  grid-area: footer;
+  margin-bottom: 20px;
 }
 
 nav .home-img {
@@ -39,7 +65,7 @@ nav .home-img {
   cursor: pointer
 }
 
-#menu-links h3:hover {
+#nav-menu-links h3:hover {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -79,7 +105,7 @@ nav .home-img {
 
 main {
   padding: 20px;
-  /* margin: 0 0 0 290px; */
+  margin: 0 0 0 290px;
 }
 
 /* ANCHOR BOTTOM DIVIDER */

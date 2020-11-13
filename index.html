@@ -12,47 +12,51 @@
 </head>
 <body>
     <nav id="navigation-menu">
-        <!-- SITE TITLE OR LOGO -->
-        <img src="https://nycip.org/wp-content/uploads/2016/06/gender.png" alt="bathroom sign" class="home-img">
-        <h2>NYC Public Restroom Locator</h2>
-        <p>New York City's #1 resource for restrooms available for the public!</p>
+        <div id="nav-menu-header">
+            <!-- SITE TITLE AND LOGO -->
+            <img src="https://nycip.org/wp-content/uploads/2016/06/gender.png" alt="bathroom sign" class="home-img">
+            <h2>NYC Public Restroom Locator</h2>
+            <p>New York City's #1 resource for restrooms available for the public!</p>
+        </div>
         <!-- MENU ITEMS/ LINKS -->
-        <div id="menu-links">
+        <div id="nav-menu-links">
             <h3 id="home-link">Home</h3>
             <h3 id="add-entry">Add New Toilet</h3>
         </div>
-        
+        <div id="nav-menu-filters">
         <!-- FILTER ALL RESTROOMS -->
-        <div id="filter-settings">
-            <!-- FILTER BY BOROUGH -->
-            <form id="filter-borough">
-                <select name="borough" id="borough-dropdown">
-                    <!-- RENDER BOROUGH OPTIONS -->
-                </select>
-            </form>
-            <!-- FILTER BY NEIGHBORHOOD -->
-            <form id="filter-neighborhood">
-                <select name="neighborhood" id="neighborhood-dropdown">
-                    <!-- RENDER NEIGHBORHOOD OPTIONS -->
-                </select>
-            </form>
+            <div id="filter-settings">
+                <!-- FILTER BY BOROUGH -->
+                <form id="filter-borough">
+                    <select name="borough" id="borough-dropdown">
+                        <!-- RENDER BOROUGH OPTIONS -->
+                    </select>
+                </form>
+                <!-- FILTER BY NEIGHBORHOOD -->
+                <form id="filter-neighborhood">
+                    <select name="neighborhood" id="neighborhood-dropdown">
+                        <!-- RENDER NEIGHBORHOOD OPTIONS -->
+                    </select>
+                </form>
+            </div>
+            <!-- Ask for Geolocation Data to Filter -->
+            <div id="filter-near-me">
+                <button id="filter-near-me-button"><i class="fas fa-search-location"></i> Restrooms Near Me</button>
+            </div>
         </div>
-        <!-- Ask for Geolocation Data to Filter -->
-        <div id="filter-near-me">
-            <button id="filter-near-me-button"><i class="fas fa-search-location"></i> Restrooms Near Me</button>
-        </div><br><br><br><br><br><br><br>
-        <!-- SHOVE LINKS AND COPYRIGHT TO BOTTOM-->
-        <div>
+        <div id="nav-menu-footer">
+            <!-- LINKS AND COPYRIGHT -->
             <a href="https://github.com/bryanmoon1991/nyc-toilet-locator-frontend" target="_blank"><button class="footer-link"><i class="fab fa-github"></i> Github Frontend</button></a>
             <a href="https://github.com/bryanmoon1991/nyc-toilet-locator-backend" target="_blank"><button class="footer-link"><i class="fab fa-github"></i> Github Backend</button></a>
             <p>A Bryan Moon & Matthew Kirby Site</p>
+            <p>Copyright © 2020 NYC Public Restroom Locator. All rights reserved.</p>
         </div>
     </nav>
     <main id="main-content-div" class="main-index">
-        <!-- JS RENDER MAIN CONTENT -->
+        <!-- RENDER MAIN CONTENT -->
     </main>
     <div id="bottom-div">
-        <!-- JS RENDER PAGE CONTROLS -->
+        <!-- RENDER PAGE CONTROLS -->
     </div>
 </body>
 </html>
