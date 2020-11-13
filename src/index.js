@@ -348,15 +348,16 @@ const renderReviews = (toiletObj) => {
     form.dataset.toiletId = toiletObj.id
     form.innerHTML = `
         <input type="text" id="username" name="username" placeholder="Name">
-        <label for="rating">Star Rating:</label>
+        
         <select id="rating" name="rating" type="number">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option value="" disabled="" selected="" hidden="">Star Rating</option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="5">5 Stars</option>
         </select><br><br>
-        <textarea name="message" placeholder="Hey... say something!" style="width:80%";></textarea><br><br>
+        <textarea name="message" placeholder="Hey... say something!"></textarea><br><br>
         <input type="submit" value="Submit">
     `
     addReviewDiv.append(heading,form)
@@ -437,9 +438,9 @@ const renderPageControls = (lastPage) => {
         loadMainDivContent()
     })
 
-    backButton.className = "page-controls nav-button"
+    backButton.className = "page-controls page-control-button"
     pageNumbers.className = "page-controls"
-    nextButton.className = "page-controls nav-button"
+    nextButton.className = "page-controls page-control-button"
     pageControls.append(backButton, pageNumbers, nextButton)
     
     if (page == 1 && page == lastPage) {
@@ -547,5 +548,6 @@ const pageListeners = () => {
 }
 
 // ANCHOR Function Calls
-loadMainDivContent()
+// loadMainDivContent()
+getToiletById(7)
 pageListeners()
