@@ -126,7 +126,8 @@ const clickListeners = () => {
         } else if (e.target.matches(".back-to-results h2")) {
             loadMainDivContent()
         } else if (e.target.matches("#add-entry")) {
-            renderAddToilet()
+            // renderAddToilet()
+            modal.style.display = "block"
         } else if (e.target.matches(".delete-button")) {
             removeReview(e)
         } else if (e.target.matches(".fa-heart")) {
@@ -142,6 +143,8 @@ const submitListeners = () => {
             createPost(e)
         } else if (e.target.matches("#new-toilet")) {
             createToilet(e)
+            modal.style.display = "none"
+            e.target.reset()
         }
     })
 }
@@ -499,6 +502,22 @@ const renderPageControls = (lastPage) => {
     }
     
 }
+
+
+let modalBtn = document.getElementById("modal-btn")
+let modal = document.querySelector(".modal")
+let closeBtn = document.querySelector(".close-btn")
+
+closeBtn.addEventListener("click", event => {
+  modal.style.display = "none"
+})
+window.addEventListener("click", e => {
+  if(e.target == modal){
+    modal.style.display = "none"
+  }
+})
+
+
 
 function renderAddToilet() {
     clearElement(main)
