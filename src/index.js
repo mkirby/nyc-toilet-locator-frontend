@@ -297,10 +297,10 @@ const renderShowPage = (toiletObj) => {
 
     const backToResults = document.createElement("div")
     backToResults.className = "back-to-results"
-    const backTitle = document.createElement("h3")
+    const backTitle = document.createElement("h2")
     backTitle.className = "clickable"
     backTitle.innerHTML = `
-        <i class="fas fa-arrow-alt-circle-left"></i> Back to Results
+        <i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results
     `
     backToResults.append(backTitle)
 
@@ -493,7 +493,7 @@ function renderAddToilet() {
     `
     pageControls.innerHTML = `
     <div class="back-to-results clickable">
-        <h3><i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results</h3>
+        <h2><i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results</h2>
     </div>`
     main.append(newToilet)
 }
