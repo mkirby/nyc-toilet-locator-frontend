@@ -365,11 +365,13 @@ const renderReviews = (toiletObj) => {
     const renderedReviews = document.createElement("div")
     renderedReviews.className = "rendered-reviews"
     //sort reviews by date then render and append
-    const sorted = toiletObj.reviews.slice().sort((a, b) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))
-    sorted.forEach(review => {
-        const singleReview = renderOneReview(review)
-        renderedReviews.append(singleReview)
-    })
+    if (toiletObj.reviews.length !== 0) {
+        const sorted = toiletObj.reviews.slice().sort((a, b) => (dayjs(a.date).isBefore(dayjs(b.date)) ? 1 : -1))
+        sorted.forEach(review => {
+            const singleReview = renderOneReview(review)
+            renderedReviews.append(singleReview)
+        })
+    }
     //append inner divs to review div
     reviewsDiv.append(addReviewDiv, renderedReviews)
     main.append(reviewsDiv)
