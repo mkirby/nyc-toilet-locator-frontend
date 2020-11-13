@@ -67,7 +67,6 @@ const deleteReview = (id) => {
     })
     .then(r => r.json())
     .then(data => {
-        console.log(data)
         getToiletById(data.toilet_id)
     })
 }
@@ -152,8 +151,16 @@ const likeToilet = e => {
     const id = e.target.dataset.toiletId
     const newlikes = parseInt(e.target.dataset.likes) + 1
     const body = {likes: newlikes}
+    // debugger
+
     patchToilet(id, body)
-    .then(renderShowPage)
+    .then(toiletObj => {
+        const socialDiv = e.target.closest("#social-icons-div")
+        clearElement(socialDiv)
+        likesDiv = renderLikesIcons(toiletObj.id, toiletObj.likes)
+        starsDiv = renderStarIcons(toiletObj.reviews)
+        socialDiv.append(likesDiv, starsDiv)
+    })
 }
 
 const createToilet = e => {
@@ -314,18 +321,28 @@ const renderSocialIcons = toiletObj => {
     // social icons container to return
     const socialDiv = document.createElement("div")
     socialDiv.id = "social-icons-div"
-    //star rating icons
-    const starRating = document.createElement("div")
-    starRating.id = "star-rating-div"
-    const avgStarRating = averageRating(toiletObj.reviews)
-    starRating.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
-    //likes count and heart
-    const likesDiv = document.createElement("div")
-    likesDiv.id = "likes-count-div"
-    likesDiv.innerHTML = `<i class="fa fa-heart alt-accent-color " style="font-size: 1.2em" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}`
+    const starRating = renderStarIcons(toiletObj.reviews)
+    const likesDiv = renderLikesIcons(toiletObj.id, toiletObj.likes)
     //add likes and stars to social div
     socialDiv.append(likesDiv, starRating)
     return socialDiv
+}
+
+const renderStarIcons = (reviewsObj) => {
+    //star rating icons
+    const starRatingDiv = document.createElement("div")
+    starRatingDiv.id = "star-rating-div"
+    const avgStarRating = averageRating(reviewsObj)
+    starRatingDiv.innerHTML = renderStarRating(avgStarRating, 5 - avgStarRating)
+    return starRatingDiv
+}
+
+const renderLikesIcons = (id, likes) => {
+    //likes count and heart
+    const likesDiv = document.createElement("div")
+    likesDiv.id = "likes-count-div"
+    likesDiv.innerHTML = `<i class="fa fa-heart alt-accent-color " style="font-size: 1.2em" data-toilet-id="${id}" data-likes="${likes}"></i> ${likes}`
+    return likesDiv
 }
 
 const renderStarRating = (checked, unchecked) => {
