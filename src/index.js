@@ -116,11 +116,13 @@ const clickListeners = () => {
         //if user clicks "Restrooms Near Me" button
         if (e.target.matches("#filter-near-me button")) {
             geoLocated = true
+            page = 1
             geolocateUser(e)
         } else if (e.target.matches(".toilet-show")) {
             getToiletById(e.target.closest(".toilet-card").dataset.id)
         } else if (e.target.matches("#home-link")) {
             searched = false
+            geoLocated = false
             page = 1
             getAllToilets()
         } else if (e.target.matches(".home-img")) {
