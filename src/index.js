@@ -277,7 +277,7 @@ const renderShowPage = (toiletObj) => {
     img.alt = toiletObj.name
     
     //toilet details
-    let name = document.createElement("h3")
+    let name = document.createElement("h1")
     if (toiletObj.handicap_accessible){
         name.innerHTML = `${toiletObj.name} <span class="accent-color"><i class="fab fa-accessible-icon"></i><s/pan>`
     } else {
