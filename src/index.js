@@ -292,7 +292,7 @@ const renderShowPage = (toiletObj) => {
     //social icons
     const socialDiv = renderSocialIcons(toiletObj)
     //append inner items to inner div container
-    divContainer.append(img, name, address, borough, neighborhood, location, handicap_accessible, open_year_round, socialDiv)
+    divContainer.append(img, name, address, borough, neighborhood, location, open_year_round, socialDiv)
     //append inner div to div container
 
     const backToResults = document.createElement("div")
@@ -322,7 +322,7 @@ const renderSocialIcons = toiletObj => {
     //likes count and heart
     const likesDiv = document.createElement("div")
     likesDiv.id = "likes-count-div"
-    likesDiv.innerHTML = `<i class="fa fa-heart alt-accent-color" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}`
+    likesDiv.innerHTML = `<i class="fa fa-heart alt-accent-color " style="font-size: 1.2em" data-toilet-id="${toiletObj.id}" data-likes="${toiletObj.likes}"></i> ${toiletObj.likes}`
     //add likes and stars to social div
     socialDiv.append(likesDiv, starRating)
     return socialDiv
@@ -330,8 +330,8 @@ const renderSocialIcons = toiletObj => {
 
 const renderStarRating = (checked, unchecked) => {
     let htmlChunk = ''
-    for (let i=checked; i>0; i--) { htmlChunk += `<i class="fa fa-star checked"></i>`}
-    for (let i=unchecked; i>0; i--) { htmlChunk += `<i class="fa fa-star"></i>`}
+    for (let i=checked; i>0; i--) { htmlChunk += `<i class="fa fa-star checked" style="font-size: 1.2em"></i>`}
+    for (let i=unchecked; i>0; i--) { htmlChunk += `<i class="fa fa-star" style="font-size: 1.2em"></i>`}
     return htmlChunk
 }
 
@@ -401,7 +401,12 @@ const renderIndexPage = (toiletObj) => {
         divCard.dataset.id = toilet.id
         const img = createNode("img", toilet.image)
         img.className = "toilet-show"
-        const name = createNode("h3", toilet.name)
+        let name = document.createElement("h3")
+        if (toilet.handicap_accessible){
+            name.innerHTML = `${toilet.name}   <i class="fab fa-accessible-icon accent-color"></i>`
+        } else {
+            name.innerHTML = toilet.name
+        }
         name.className = "clickable toilet-show"
         const borough = createNode("p", `<b>Borough:</b><br>${toilet.borough}`)
         const neighborhood = createNode("p", `<b>Neighborhood:</b><br>${toilet.neighborhood}`)
@@ -415,22 +420,26 @@ const renderIndexPage = (toiletObj) => {
 
 const renderPageControls = (lastPage) => {
     clearElement(pageControls)
-    const backButton = createNode("button", "<")
+    // <i class="fas fa-arrow-alt-circle-left"></i>
+
+    const backButton = document.createElement("button")
+    backButton.innerHTML = `<i class="fas fa-angle-left"></i>`
     backButton.addEventListener("click", () => {
         page--
         loadMainDivContent()
     })
     const pageNumbers = createNode("p", `Page ${page} of ${lastPage}`)
 
-    const nextButton = createNode("button", ">")
+    const nextButton = document.createElement("button")
+    nextButton.innerHTML = `<i class="fas fa-angle-right"></i>`
     nextButton.addEventListener("click", () => {
         page++
         loadMainDivContent()
     })
 
-    backButton.className = "page-controls"
+    backButton.className = "page-controls nav-button"
     pageNumbers.className = "page-controls"
-    nextButton.className = "page-controls"
+    nextButton.className = "page-controls nav-button"
     pageControls.append(backButton, pageNumbers, nextButton)
     
     if (page == 1 && page == lastPage) {
@@ -481,7 +490,7 @@ function renderAddToilet() {
     `
     pageControls.innerHTML = `
     <div class="back-to-results clickable">
-        <h3><i class="fas fa-arrow-alt-circle-left"></i> Back to Results</h3>
+        <h3><i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results</h3>
     </div>`
     main.append(newToilet)
 }
@@ -503,6 +512,8 @@ const createNode = (type, content) => {
             node.innerText = content;
             node.value = content;
             break
+        case "button":
+            node.innerHTML = content;
         default:
             node.innerText = content;
             break
