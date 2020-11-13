@@ -30,6 +30,8 @@ nav {
   width: 250px;
   padding: 20px;
   position: relative;
+  /* position: fixed;
+  top: 0; */
 }
 
 nav .home-img {
@@ -53,9 +55,19 @@ nav .home-img {
   margin: 5px 0;
 }
 
-nav footer {
-  bottom: 50px;
-  position: absolute;
+.footer-link {
+  background-color: #377fbe;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.footer-link:hover {
+  background-color: #f8f8f8;
 }
 
 .page-control-button {
@@ -67,6 +79,7 @@ nav footer {
 
 main {
   padding: 20px;
+  /* margin: 0 0 0 290px; */
 }
 
 /* ANCHOR BOTTOM DIVIDER */
