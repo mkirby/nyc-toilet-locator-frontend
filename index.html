@@ -58,5 +58,42 @@
     <div id="bottom-div">
         <!-- RENDER PAGE CONTROLS -->
     </div>
+
+<div class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+            <form id="new-toilet">
+            <h2>Add New NYC Public Toilet</h2>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" class="full" placeholder="Add a name/title for this toilet..."><br><br>
+            
+            <select name="borough" id="borough">
+                <option value="Bronx">Bronx</option>
+                <option value="Manhattan">Manhattan</option>
+                <option value="Brooklyn">Brooklyn</option>
+                <option value="Queens">Queens</option>
+                <option value="Staten Island">Staten Island</option>
+            </select>
+            
+            <input type="text" id="neighborhood" name="neighborhood" class="semi-full" placeholder="Neighborhood..."><br><br>
+            <label for="address">Address:</label><br>
+            <input type="text" id="address" name="address" class="full" placeholder="Full Address..."><br><br>
+            <label for="location">Specific Location Directions:</label><br>
+            <input type="text" id="location" name="location" class="full" placeholder="ie. between first & second ave..."><br><br>
+            <label for="image">Image URL:</label><br>
+            <input type="text" id="image" name="image" class="full" placeholder="Image URL..."><br><br>
+            <input type="checkbox" id="handicap-check" name="handicap" value="false">
+            <label for="handicap">Handicap Accessible?</label>
+            <input type="checkbox" id="year-check" name="year" value="false">
+            <label for="year">Open Year Round?</label><br><br>
+            <input type="submit" value="Submit">
+            
+            </form>
+        
+    </div>
+</div>
+
 </body>
+
+
 </html>
