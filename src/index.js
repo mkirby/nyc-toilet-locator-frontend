@@ -431,7 +431,7 @@ const renderPageControls = (lastPage) => {
         page--
         loadMainDivContent()
     })
-    const pageNumbers = createNode("p", `Page ${page} of ${lastPage}`)
+    const pageNumbers = createNode("h3", `Page ${page} of ${lastPage}`)
 
     const nextButton = document.createElement("button")
     nextButton.innerHTML = `<i class="fas fa-angle-right"></i>`
