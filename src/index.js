@@ -82,13 +82,29 @@ const postToilet = (body) => {
     .then(r => r.json())
     .then(renderShowPage)
 }
-const getAddress = (latitude, longitude) => {
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?' + 'latlng=' + latitude + ',' + longitude + '&key=' + GOOGLE_MAP_KEY)
+const filterToiletsNearUser = (lat, long) => {
+    fetch(`http://localhost:3000/api/v1/near_user?lat=${lat}&long=${long}`)
     .then(r => r.json())
+    .then(data => {
+        console.log(data)
+        renderIndexPage(data.toilets)
+        renderPageControls(data.lastPage)
+        renderBoroughDropdown()
+        renderNeighborhoodsDropdown(data.neighborhoods)
+    })
+}
+const ipLookUp = () => {
+    fetch('http://ip-api.com/json')
     .then(
-        function success (response) { console.log('User\'s Address Data is ', response) },
-        function fail (status) { console.log('Request failed.  Returned status of', status) }
-    )
+        function success(response) {
+            console.log('User\'s Location Data is ', response);
+            console.log('User\'s Country', response.country);
+            filterToiletsNearUser(response.lat, response.lon)
+        },
+        function fail(data, status) {
+            console.log('Request failed.  Returned status of', status);
+        }
+    );
 }
 
 // ANCHOR Event Listeners
@@ -213,22 +229,17 @@ const geolocateUser = event => {
         navigator.geolocation.getCurrentPosition(
             function success(position) {
             // for when getting location is a success
-            console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
-            // TODO user agrees to share location then run this:
-            // TODO need to import API key
-            // getAddress(position.coords.latitude, position.coords.longitude)
+            filterToiletsNearUser(position.coords.latitude, position.coords.longitude)
             },
         function error(error_message) {
             // for when getting location results in an error
             console.error('An error has occured while retrieving ' + 'location', error_message)
-            // TODO issue with getting location then run this:
-            // ipLookUp()
+            ipLookUp()
         });
     } else {
         // geolocation is not supported - get your location some other way
         console.log('geolocation is not enabled on this browser')
-        // TODO user has location data turned off run this:
-        // ipLookUp()
+        ipLookUp()
     }
 }
 
