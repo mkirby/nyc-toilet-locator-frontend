@@ -29,9 +29,9 @@ nav {
   height: 100%;
   width: 250px;
   padding: 20px 20px 100px 20px;
-  /* position: absolute; */
-  position: fixed;
-  top: 0;
+  position: relative;
+  /* position: fixed;
+  top: 0; */
   display: grid;
   grid-template-rows: 0fr 0fr 1fr 0fr;
   gap: 0px 0px;
@@ -105,7 +105,7 @@ nav .home-img {
 
 main {
   padding: 20px;
-  margin: 0 0 0 290px;
+  /* margin: 0 0 0 290px; */
 }
 
 /* ANCHOR BOTTOM DIVIDER */
@@ -113,6 +113,7 @@ main {
 #bottom-div {
   grid-area: bottom;
   text-align: center;
+  /* margin: 0 0 0 290px; */
 }
 
 .page-controls {
