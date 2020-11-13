@@ -1,8 +1,11 @@
 // ANCHOR DOM Elements
 const main = document.querySelector("#main-content-div")
 const pageControls = document.querySelector("#bottom-div")
+let modal = document.querySelector(".modal")
 let page = 1
 let searched = false
+let geoLocated = false
+let geoCoords
 let filterQuery
 
 // ANCHOR Fetch Functions
@@ -82,8 +85,8 @@ const postToilet = (body) => {
     .then(r => r.json())
     .then(renderShowPage)
 }
-const filterToiletsNearUser = (lat, long) => {
-    fetch(`http://localhost:3000/api/v1/near_user?lat=${lat}&long=${long}`)
+const filterToiletsNearUser = (coordsArray) => {
+    fetch(`http://localhost:3000/api/v1/toilets?lat=${coordsArray[0]}&long=${coordsArray[1]}&page=${page}`)
     .then(r => r.json())
     .then(data => {
         console.log(data)
@@ -112,6 +115,7 @@ const clickListeners = () => {
     document.addEventListener("click", e => {
         //if user clicks "Restrooms Near Me" button
         if (e.target.matches("#filter-near-me button")) {
+            geoLocated = true
             geolocateUser(e)
         } else if (e.target.matches(".toilet-show")) {
             getToiletById(e.target.closest(".toilet-card").dataset.id)
@@ -126,12 +130,18 @@ const clickListeners = () => {
         } else if (e.target.matches(".back-to-results h2")) {
             loadMainDivContent()
         } else if (e.target.matches("#add-entry")) {
-            // renderAddToilet()
             modal.style.display = "block"
         } else if (e.target.matches(".delete-button")) {
             removeReview(e)
         } else if (e.target.matches(".fa-heart")) {
             likeToilet(e)
+        } else if (e.target.matches(".close-btn")) {
+            modal.style.display = "none"
+        }
+    })
+    window.addEventListener("click", e => {
+        if(e.target == modal){
+        modal.style.display = "none"
         }
     })
 }
@@ -232,7 +242,8 @@ const geolocateUser = event => {
         navigator.geolocation.getCurrentPosition(
             function success(position) {
             // for when getting location is a success
-            filterToiletsNearUser(position.coords.latitude, position.coords.longitude)
+            geoCoords = [position.coords.latitude, position.coords.longitude]
+            filterToiletsNearUser(geoCoords)
             },
         function error(error_message) {
             // for when getting location results in an error
@@ -503,61 +514,6 @@ const renderPageControls = (lastPage) => {
     
 }
 
-let modalBtn = document.getElementById("modal-btn")
-let modal = document.querySelector(".modal")
-let closeBtn = document.querySelector(".close-btn")
-
-closeBtn.addEventListener("click", event => {
-    modal.style.display = "none"
-})
-window.addEventListener("click", e => {
-    if(e.target == modal){
-    modal.style.display = "none"
-    }
-})
-
-function renderAddToilet() {
-    clearElement(main)
-    clearElement(pageControls)
-    main.className = "main-add"
-    const newToiletFormDiv = document.createElement("div")
-    newToiletFormDiv.id = "new-toilet-form-div"
-    const newToilet = document.createElement("form")
-    newToilet.id = "new-toilet"
-    newToilet.innerHTML = `
-    <h2>Add New NYC Public Toilet</h2>
-    <label for="name">Name:</label><br> 
-    <input type="text" id="name" name="name" class="full" placeholder="Add a name/title for this toilet..."><br><br>
-    <select name="borough" id="borough">
-        <option value="Bronx">Bronx</option>
-        <option value="Manhattan">Manhattan</option>
-        <option value="Brooklyn">Brooklyn</option>
-        <option value="Queens">Queens</option>
-        <option value="Staten Island">Staten Island</option>
-    </select>
-    <input type="text" id="neighborhood" name="neighborhood" class="semi-full" placeholder="Neighborhood..."><br><br>
-    <label for="address">Address:</label><br>
-    <input type="text" id="address" name="address" class="full" placeholder="Full Address..."><br><br>
-    <label for="location">Specific Location Directions:</label><br>
-    <input type="text" id="location" name="location" class="full" placeholder="ie. between first & second ave..."><br><br>
-    <label for="image">Image URL:</label><br>
-    <input type="text" id="image" name="image" class="full" placeholder="Image URL..."><br><br>
-    <input type="checkbox" id="handicap-check" name="handicap" value="false">
-    <label for="handicap">Handicap Accessible?</label>
-    <input type="checkbox" id="year-check" name="year" value="false">
-    <label for="year">Open Year Round?</label><br><br>
-    <input type="submit" value="Submit">
-    `
-    const backToResults = document.createElement("div")
-    backToResults.innerHTML = `
-        <div class="back-to-results back-min-width">
-            <h2 class="clickable"><i class="fas fa-arrow-alt-circle-left accent-color"></i> Back to Results</h2>
-        </div>
-    `
-    newToiletFormDiv.append(newToilet, backToResults)
-    main.append(newToiletFormDiv)
-}
-
 // ANCHOR Helper Functions
 const createNode = (type, content) => {
     let node = document.createElement(type);
@@ -600,7 +556,13 @@ const averageRating = toiletReviews => {
 
 // ANCHOR Initial Render
 const loadMainDivContent = () => {
-    searched ? searchToilets(filterQuery) : getAllToilets()
+    if (searched) {
+        searchToilets(filterQuery)
+    } else if (geoLocated) {
+        filterToiletsNearUser(geoCoords)
+    } else {
+        getAllToilets()
+    }
 }
 
 const pageListeners = () => {
@@ -610,6 +572,5 @@ const pageListeners = () => {
 }
 
 // ANCHOR Function Calls
-// loadMainDivContent()
+loadMainDivContent()
 pageListeners()
-renderAddToilet()
