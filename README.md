@@ -6,13 +6,9 @@ An app for NYC residents and tourists to search for and review NYC public restro
 - Harnessed the NYC Open Data API to pull and geocode data on restrooms in public parks.
 - Leveraged HTML5 Geolocation API to filter public restrooms results based on the users device location.
 
-### Ruby on Rails Backend
+### Ruby on Rails Backend - [Link](https://github.com/bryanmoon1991/nyc-toilet-locator-backend)
 
-- [Github Link](https://github.com/bryanmoon1991/nyc-toilet-locator-backend)
-
-### Javascript Frontend
-
-- [Github Frontend](https://github.com/bryanmoon1991/nyc-toilet-locator-frontend)
+### Javascript Frontend - [Link](https://github.com/bryanmoon1991/nyc-toilet-locator-frontend)
 
 ### Seed Data
 
