@@ -26,3 +26,7 @@ An app for NYC residents and tourists to search for and review NYC public restro
 - [pg_search](https://github.com/Casecommons/pg_search)
 - [uri](https://github.com/ruby/uri)
 - [dayjs](https://github.com/iamkun/dayjs)
+
+### Domain Model
+
+![GitHub Logo](./images/domain-model.png)
