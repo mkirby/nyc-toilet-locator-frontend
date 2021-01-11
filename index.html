@@ -1,93 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/main.css">
-    <script src="https://kit.fontawesome.com/e2da966b34.js" crossorigin="anonymous"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <script
+      src="https://kit.fontawesome.com/e2da966b34.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="node_modules/dayjs/dayjs.min.js"></script>
-    <script>dayjs().format()</script>
+    <script>
+      dayjs().format();
+    </script>
     <script src="./src/index.js" defer></script>
     <title>NYC Toilet Locator</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav id="navigation-menu">
-        <div id="nav-menu-header">
-            <!-- SITE TITLE AND LOGO -->
-            <img src="https://nycip.org/wp-content/uploads/2016/06/gender.png" alt="bathroom sign" class="home-img">
-            <h2>NYC Public Restroom Locator</h2>
-            <p>New York City's #1 resource for restrooms available for the public!</p>
-        </div>
-        <!-- MENU ITEMS/ LINKS -->
-        <div id="nav-menu-links">
-            <h3 id="home-link">Home</h3>
-            <h3 id="add-entry">Add New Toilet</h3>
-        </div>
-        <div id="nav-menu-filters">
+      <div id="nav-menu-header">
+        <!-- SITE TITLE AND LOGO -->
+        <img
+          src="https://lh3.googleusercontent.com/proxy/jGKQxv6ez7Rg3Et4cdhab1B5VUaH8PWY7lPQfJFhd5XMg0LTF43K0g0IOmtu4Zzk1qfzeJEKUSMx-o7zCJO8M3Bgt103psk"
+          alt="bathroom sign"
+          class="home-img"
+        />
+        <h2>NYC Public Restroom Locator</h2>
+        <p>
+          New York City's #1 resource for restrooms available for the public!
+        </p>
+      </div>
+      <!-- MENU ITEMS/ LINKS -->
+      <div id="nav-menu-links">
+        <h3 id="home-link">Home</h3>
+        <h3 id="add-entry">Add New Toilet</h3>
+      </div>
+      <div id="nav-menu-filters">
         <!-- FILTER ALL RESTROOMS -->
-            <div id="filter-settings">
-                <!-- FILTER BY BOROUGH -->
-                <form id="filter-borough">
-                    <select name="borough" id="borough-dropdown">
-                        <!-- RENDER BOROUGH OPTIONS -->
-                    </select>
-                </form>
-                <!-- FILTER BY NEIGHBORHOOD -->
-                <form id="filter-neighborhood">
-                    <select name="neighborhood" id="neighborhood-dropdown">
-                        <!-- RENDER NEIGHBORHOOD OPTIONS -->
-                    </select>
-                </form>
-            </div>
-            <!-- Ask for Geolocation Data to Filter -->
-            <div id="filter-near-me">
-                <button id="filter-near-me-button"><i class="fas fa-search-location"></i> Restrooms Near Me</button>
-            </div>
+        <div id="filter-settings">
+          <!-- FILTER BY BOROUGH -->
+          <form id="filter-borough">
+            <select name="borough" id="borough-dropdown">
+              <!-- RENDER BOROUGH OPTIONS -->
+            </select>
+          </form>
+          <!-- FILTER BY NEIGHBORHOOD -->
+          <form id="filter-neighborhood">
+            <select name="neighborhood" id="neighborhood-dropdown">
+              <!-- RENDER NEIGHBORHOOD OPTIONS -->
+            </select>
+          </form>
         </div>
-        <div id="nav-menu-footer">
-            <!-- LINKS AND COPYRIGHT -->
-            <a href="https://github.com/bryanmoon1991/nyc-toilet-locator-frontend" target="_blank"><button class="footer-link"><i class="fab fa-github"></i> Github Frontend</button></a>
-            <a href="https://github.com/bryanmoon1991/nyc-toilet-locator-backend" target="_blank"><button class="footer-link"><i class="fab fa-github"></i> Github Backend</button></a>
-            <p>A Bryan Moon & Matthew Kirby Site</p>
-            <p>Copyright © 2020 NYC Public Restroom Locator. All rights reserved.</p>
+        <!-- Ask for Geolocation Data to Filter -->
+        <div id="filter-near-me">
+          <button id="filter-near-me-button">
+            <i class="fas fa-search-location"></i> Restrooms Near Me
+          </button>
         </div>
+      </div>
+      <div id="nav-menu-footer">
+        <!-- LINKS AND COPYRIGHT -->
+        <a
+          href="https://github.com/bryanmoon1991/nyc-toilet-locator-frontend"
+          target="_blank"
+          ><button class="footer-link">
+            <i class="fab fa-github"></i> Github Frontend
+          </button></a
+        >
+        <a
+          href="https://github.com/bryanmoon1991/nyc-toilet-locator-backend"
+          target="_blank"
+          ><button class="footer-link">
+            <i class="fab fa-github"></i> Github Backend
+          </button></a
+        >
+        <p>A Bryan Moon & Matthew Kirby Site</p>
+        <p>
+          Copyright © 2020 NYC Public Restroom Locator. All rights reserved.
+        </p>
+      </div>
     </nav>
     <main id="main-content-div" class="main-index">
-        <!-- RENDER MAIN CONTENT -->
+      <!-- RENDER MAIN CONTENT -->
     </main>
     <div id="bottom-div">
-        <!-- RENDER PAGE CONTROLS -->
+      <!-- RENDER PAGE CONTROLS -->
     </div>
     <div class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-                <form id="new-toilet">
-                <h2>Add New NYC Public Toilet</h2>
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name" class="full" placeholder="Add a name/title for this toilet..."><br><br>
-                <select name="borough" id="borough">
-                    <option value="Bronx">Bronx</option>
-                    <option value="Manhattan">Manhattan</option>
-                    <option value="Brooklyn">Brooklyn</option>
-                    <option value="Queens">Queens</option>
-                    <option value="Staten Island">Staten Island</option>
-                </select>
-                <input type="text" id="neighborhood" name="neighborhood" class="semi-full" placeholder="Neighborhood..."><br><br>
-                <label for="address">Address:</label><br>
-                <input type="text" id="address" name="address" class="full" placeholder="Full Address..."><br><br>
-                <label for="location">Specific Location Directions:</label><br>
-                <input type="text" id="location" name="location" class="full" placeholder="ie. between first & second ave..."><br><br>
-                <label for="image">Image URL:</label><br>
-                <input type="text" id="image" name="image" class="full" placeholder="Image URL..."><br><br>
-                <input type="checkbox" id="handicap-check" name="handicap" value="false">
-                <label for="handicap">Handicap Accessible?</label>
-                <input type="checkbox" id="year-check" name="year" value="false">
-                <label for="year">Open Year Round?</label><br><br>
-                <input type="submit" value="Submit">
-                
-                </form>
-            
-        </div>
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <form id="new-toilet">
+          <h2>Add New NYC Public Toilet</h2>
+          <label for="name">Name:</label><br />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="full"
+            placeholder="Add a name/title for this toilet..."
+          /><br /><br />
+          <select name="borough" id="borough">
+            <option value="Bronx">Bronx</option>
+            <option value="Manhattan">Manhattan</option>
+            <option value="Brooklyn">Brooklyn</option>
+            <option value="Queens">Queens</option>
+            <option value="Staten Island">Staten Island</option>
+          </select>
+          <input
+            type="text"
+            id="neighborhood"
+            name="neighborhood"
+            class="semi-full"
+            placeholder="Neighborhood..."
+          /><br /><br />
+          <label for="address">Address:</label><br />
+          <input
+            type="text"
+            id="address"
+            name="address"
+            class="full"
+            placeholder="Full Address..."
+          /><br /><br />
+          <label for="location">Specific Location Directions:</label><br />
+          <input
+            type="text"
+            id="location"
+            name="location"
+            class="full"
+            placeholder="ie. between first & second ave..."
+          /><br /><br />
+          <label for="image">Image URL:</label><br />
+          <input
+            type="text"
+            id="image"
+            name="image"
+            class="full"
+            placeholder="Image URL..."
+          /><br /><br />
+          <input
+            type="checkbox"
+            id="handicap-check"
+            name="handicap"
+            value="false"
+          />
+          <label for="handicap">Handicap Accessible?</label>
+          <input type="checkbox" id="year-check" name="year" value="false" />
+          <label for="year">Open Year Round?</label><br /><br />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
     </div>
-</body>
+  </body>
 </html>
