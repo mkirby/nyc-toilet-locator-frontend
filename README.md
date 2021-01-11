@@ -29,4 +29,4 @@ An app for NYC residents and tourists to search for and review NYC public restro
 
 ### Domain Model
 
-![GitHub Logo](./images/domain-model.png)
+![Domain Model](./images/domain-model.png)
