@@ -2,6 +2,10 @@
 
 An app for NYC residents and tourists to search for and review NYC public restrooms by user location, borough, and neighborhood filters.
 
+- Developed a postgreSQL database utilizing custom pagination of toilet data and user reviews.
+- Harnessed the NYC Open Data API to pull and geocode data on restrooms in public parks.
+- Leveraged HTML5 Geolocation API to filter public restrooms results based on the users device location.
+
 ### Ruby on Rails Backend
 
 - [Github Link](https://github.com/bryanmoon1991/nyc-toilet-locator-backend)
