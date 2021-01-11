@@ -26,3 +26,11 @@ An app for NYC residents and tourists to search for and review NYC public restro
 ### Domain Model
 
 ![Domain Model](./images/domain-model.png)
+
+### Home Page
+
+![Home Page](./images/home-page.png)
+
+### Toilet Show Page
+
+![Toilet Show Page](./images/toilet-page.png)
